@@ -5,7 +5,7 @@
 // use int trilaterate(record_t, record_t, record_t, coord_t*, coord_t*) with parameters
 
 #include <math.h>
-#include <trilaterate.hpp>
+#include "trilaterate.hpp"
 
 // Reference: https://paulbourke.net/geometry/circlesphere/
 int circle_circle_intersection(circle_t circle1, circle_t circle2, point_t *intersection1, point_t *intersection2)
