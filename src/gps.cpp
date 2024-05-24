@@ -3,7 +3,7 @@
 #define UART_data_bits 8
 #define UART_stop_bits 1
 
-void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BAUDRATE) // Initialize UART
+void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BAUDRATE) 
 {
     /*
     uart_init = Set UART baudrate
@@ -18,10 +18,10 @@ void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BA
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); 
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); 
     uart_set_hw_flow(UART_ID, false, false); 
-    uart_set_format(UART_ID, UART_data_bits, UART_stop_bits, UART_PARITY_NONE); // Set UART format
+    uart_set_format(UART_ID, UART_data_bits, UART_stop_bits, UART_PARITY_NONE); 
 }
 
-char *read_UART(uart_inst_t *UART_ID) // Read data from UART
+char *read_UART(uart_inst_t *UART_ID)
 {
     /*
     const u_int8_t = Maximum size of the array of received data
