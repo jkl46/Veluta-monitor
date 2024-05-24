@@ -21,4 +21,5 @@ double time_to_distance(double time, int area)
     default:
         break;
     }
+    return distance;
 }
