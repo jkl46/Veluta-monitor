@@ -1,13 +1,8 @@
 #ifndef TRILATERATE_HPP
 #define TRILATERATE_HPP
 
-#include <iostream>
-#include <fstream>
-
 # define M_PI 3.14159265358979323846
 #define PYTHAG(x1, x2) sqrt(pow(x1, 2.0) + pow(x2, 2.0))
-
-
 
 typedef struct {
 	double x;
@@ -15,12 +10,12 @@ typedef struct {
 } point_t;
 
 typedef struct {
-	point_t p;
+	point_t pos;
 	double r;
 } circle_t;
 
 typedef struct {
-	point_t p;
+	point_t pos;
 	double slope;
 } line_t;
 
@@ -30,41 +25,29 @@ typedef struct {
 } coord_t;
 
 typedef struct {
-  coord_t *p;
+  coord_t *pos;
   double r;
 } record_t;
 
 
 // Function prototypes
 
-int circleCircleIntersection(circle_t c0, circle_t c1, point_t *p1, point_t *p2);
+int circle_circle_intersection(circle_t circle0, circle_t circle1, point_t *point1, point_t *point2);
 
-int lineLineIntersect(line_t l1, line_t l2, point_t *p);
+int line_line_intersect(line_t line1, line_t line2, point_t *result);
 
-double longitudeDegreeDistane(double lon);
+double lon_degree_distance(double lon);
 
-double latitudeDegreeDistance(double lat);
+double lat_degree_distance(double lat);
 
-double getDistance(coord_t p1, coord_t p2);
+double get_distance(coord_t point1, coord_t point2);
 
-int trilaterate(record_t r1, record_t r2, record_t r3, coord_t *trilaterationCoord, coord_t *intersectionCoord, std::ofstream &exportFile);
+int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *trilaterationCoord, coord_t *intersectionCoord);
 
-int pointToCoord(coord_t base, point_t p, coord_t *res);
+int point_to_coord(coord_t base, point_t point, coord_t *result);
 
-double getDelta(double a, double b);
+int estimate(int argc, char **argv);
 
-// #warning Disable or erase testing functions for trilateration at deployment in file: include/trilaterate.hpp!
-
-# define LOG(x) std::cout << x << std::endl;
-
-void printLine(const char *c, line_t line);
-
-void printPoint(const char *c, point_t point);
-
-void printCoord(const char *c, coord_t coord);
-
-void printCircle(const char *c, circle_t circle);
-
-void printPointAsCoord(const char *c, coord_t base, point_t point);
+double get_difference(double a, double b);
 
 #endif // TRILATERATE_HPP
