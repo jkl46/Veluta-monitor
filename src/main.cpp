@@ -6,6 +6,7 @@
 
 int main(void)
 {
+    Serial.begin(9600);
     stdio_init_all();
 
     LoRaReceiver lora;
@@ -15,6 +16,4 @@ int main(void)
     {
         lora.read();
     }
-    
-    return 0;
 }
