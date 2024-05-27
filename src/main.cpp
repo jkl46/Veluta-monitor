@@ -1,10 +1,18 @@
-#include <Arduino.h> 
-#include "pico/stdlib.h"
-#include <trilaterate.hpp>
+#define MASTER
+// #define SLAVE
+
+#ifdef MASTER
+#define master_main build_main
+#include <master/master.cpp>
+#endif
+
+#ifdef SLAVE
+#define slave_main build_main
+#include <slave/slave.cpp>
+#endif
 
 
-int main(void)
+int main(int argc, char** argv)
 {
-
-    return 0;
+    return build_main(argc, argv);
 }
