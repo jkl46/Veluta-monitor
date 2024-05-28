@@ -18,8 +18,10 @@
 #include <slave/slave.cpp>
 #endif
 
+#include "pico/stdlib.h"
 
 int main(int argc, char** argv)
 {
+    stdio_init_all();
     return build_main(argc, argv);
 }
