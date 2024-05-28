@@ -29,11 +29,10 @@ int main(int argc, char** argv)
 {
     stdio_init_all();
 
-    Button btn1 = Button(28, &button1Callback);
-    Button btn2 = Button(27, &button2Callback);
-    Button btn3 = Button(26, &button3Callback);
-
-
+    Button btn1 = Button(11, &button1Callback);
+    Button btn2 = Button(14, &button2Callback);
+    Button btn3 = Button(15, &button3Callback);
+    
     /*__________Run master or slave main________*/
     #ifdef MASTER
     return master_main(argc, argv);

@@ -41,14 +41,15 @@ void debounceTimerCallback(uint alarmNumber)
 
 Button::Button(int pinNum, void (*buttonCallback)())
 {
-
     if (Button::debounceTimerInit == false)
     {
         Button::debounceTimerInit = true;
         hardware_alarm_set_callback(ALARM_NUMBER, &debounceTimerCallback);
     }
 
-    // Init pin and set callback on logic change falling
+    // Init pin 
+    gpio_init(pinNum);
+    // Set callback on logic change falling
     gpio_set_irq_enabled_with_callback(pinNum, GPIO_IRQ_EDGE_FALL, true, Button::debounceCallback);
     // Set pin as input 
     gpio_set_dir(pinNum, 0);
@@ -56,6 +57,7 @@ Button::Button(int pinNum, void (*buttonCallback)())
     gpio_set_pulls(pinNum, true, false);
     // Pull Pin high
     gpio_set_drive_strength(pinNum, GPIO_DRIVE_STRENGTH_2MA);
+
 
     // Save gpio pin to class
     this->pinNum = pinNum;
