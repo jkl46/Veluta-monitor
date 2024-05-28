@@ -3,8 +3,8 @@
 
 /*----------------CHANGE COMMENT BELOW------------------*/
 
-#define MASTER
-// #define SLAVE
+#//define MASTER
+#define SLAVE
 
 /*----------------DO NOT CHANGE BELOW-------------------*/
 
