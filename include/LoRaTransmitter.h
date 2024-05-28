@@ -12,7 +12,7 @@ public:
 
     // Add any necessary member functions here
     void start();
-    void send(const char* message);
+    void send(const char* data[2], uint8_t slave_id, uint8_t hornet_id);
 private:
     // Add any necessary member variables here
 
