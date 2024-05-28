@@ -1,6 +1,6 @@
 /*________________CHANGE COMMENT BELOW__________________*/
 
-#//define MASTER
+//define MASTER
 #define SLAVE
 
 /*_______________________________________________________*/
