@@ -20,9 +20,9 @@ Flash::Flash(void)
 uint8_t* parse_address(uint8_t address, uint8_t* data)
 {
     // Create new package with starting byte as address
-    uint8_t* package = new uint8_t[PACKAGE_SIZE];
+    uint8_t* package = new uint8_t[PACKAGE_SIZE + ADDRESS_BUFFER];
     package[0] = address;
-    for (uint8_t count = 1; count < PACKAGE_SIZE; count++)
+    for (uint8_t count = 1; count < PACKAGE_SIZE + ADDRESS_BUFFER; count++)
         package[count] = data[count - 1];
     return package;
 }
@@ -40,7 +40,7 @@ void Flash::write_to_address(uint8_t address, uint8_t* data)
     // Parse data into package with address
     uint8_t* package = parse_address(address, data);
     // Write data in pointer data to I2C
-    i2c_write_blocking(I2C, WRITE_ADDRESS, package, PACKAGE_SIZE, false);
+    i2c_write_blocking(I2C, WRITE_ADDRESS, package, PACKAGE_SIZE + ADDRESS_BUFFER, false);
     // Delete package after use
     delete[] package;
 }
