@@ -11,6 +11,7 @@
 #define PACKAGE_SIZE (16)
 #define WRITE_ADDRESS (0x50)
 #define READ_ADDRESS (0x50)
+#define ADDRESS_BUFFER (1)
 
 class Flash
 {
