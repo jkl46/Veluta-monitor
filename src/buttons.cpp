@@ -5,76 +5,75 @@
 #include "buttons.hpp"
 #include "malloc.h"
 
-int Button::buttonCounter = 0;
-bool Button::isDebouncing = false;
-bool Button::debounceTimerInit = false;
-int Button::debouncePin = 0;
+int Button::button_counter = 0;
+bool Button::debounce_timer_init = false;
+int Button::debounce_pin = 0;
 
-Button** Button::buttonCollection = (Button**) malloc(MAX_BUTTONS);
-int* Button::pinCollection = (int *) malloc(MAX_BUTTONS);
+Button** Button::button_collection = (Button**) malloc(MAX_BUTTONS);
+int* Button::pin_collection = (int *) malloc(MAX_BUTTONS);
 
-void Button::debounceCallback(uint gpio, uint32_t events)
+void Button::debounce_callback(uint gpio, uint32_t events)
 {
     // Disable button interrupts
-    for (size_t i = 0; i < Button::buttonCounter; i++)
-        gpio_set_irq_enabled (pinCollection[i], GPIO_IRQ_EDGE_FALL, false);
+    for (size_t i = 0; i < Button::button_counter; i++)
+        gpio_set_irq_enabled (pin_collection[i], GPIO_IRQ_EDGE_FALL, false);
 
     // Store cause of interrupts
-    Button::debouncePin = gpio;
+    Button::debounce_pin = gpio;
 
     // Set next debounce callback time
     hardware_alarm_set_target(ALARM_NUMBER, (time_us_64() + DEBOUNCE_TIME_US));
 }
 
-void debounceTimerCallback(uint alarmNumber)
+void debounce_timer_callback(uint alarmNumber)
 {
-    for (size_t i = 0; i < Button::buttonCounter; i++)
+    for (size_t i = 0; i < Button::button_counter; i++)
     {
-        gpio_set_irq_enabled (Button::pinCollection[i], GPIO_IRQ_EDGE_FALL, true);
-        if (Button::pinCollection[i] == Button::debouncePin && gpio_get(Button::debouncePin) == 0)
+        gpio_set_irq_enabled (Button::pin_collection[i], GPIO_IRQ_EDGE_FALL, true);
+        if (Button::pin_collection[i] == Button::debounce_pin && gpio_get(Button::debounce_pin) == 0)
         {
-            Button::buttonCollection[i]->callback();
+            Button::button_collection[i]->callback();
         }
     }
 
 }
 
-Button::Button(int pinNum, void (*buttonCallback)())
+Button::Button(int pin_num, void (*buttonCallback)())
 {
-    if (Button::debounceTimerInit == false)
+    if (Button::debounce_timer_init == false)
     {
-        Button::debounceTimerInit = true;
-        hardware_alarm_set_callback(ALARM_NUMBER, &debounceTimerCallback);
+        Button::debounce_timer_init = true;
+        hardware_alarm_set_callback(ALARM_NUMBER, &debounce_timer_callback);
     }
 
     // Init pin 
-    gpio_init(pinNum);
+    gpio_init(pin_num);
     // Set callback on logic change falling
-    gpio_set_irq_enabled_with_callback(pinNum, GPIO_IRQ_EDGE_FALL, true, Button::debounceCallback);
+    gpio_set_irq_enabled_with_callback(pin_num, GPIO_IRQ_EDGE_FALL, true, Button::debounce_callback);
     // Set pin as input 
-    gpio_set_dir(pinNum, 0);
+    gpio_set_dir(pin_num, 0);
     // Enable internal gpio pull-up
-    gpio_set_pulls(pinNum, true, false);
+    gpio_set_pulls(pin_num, true, false);
     // Pull Pin high
-    gpio_set_drive_strength(pinNum, GPIO_DRIVE_STRENGTH_2MA);
+    gpio_set_drive_strength(pin_num, GPIO_DRIVE_STRENGTH_2MA);
 
 
     // Save gpio pin to class
-    this->pinNum = pinNum;
+    this->pin_num = pin_num;
 
     // Set Button callback
     this->callback = buttonCallback;
-    this->indexInList = this->buttonCounter;
-    Button::buttonCollection[Button::buttonCounter] = this;
-    Button::pinCollection[Button::buttonCounter] = pinNum;
+    this->index_in_list = this->button_counter;
+    Button::button_collection[Button::button_counter] = this;
+    Button::pin_collection[Button::button_counter] = pin_num;
 
     // Increase counter
-    Button::buttonCounter++;
+    Button::button_counter++;
 }
 
 Button::~Button()
 {
     // Free 
-    free(Button::buttonCollection);
-    free(Button::pinCollection);
+    free(Button::button_collection);
+    free(Button::pin_collection);
 }

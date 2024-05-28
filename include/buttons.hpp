@@ -18,22 +18,21 @@
 class Button 
 {
 public:
-    static bool debounceTimerInit;
-    static bool isDebouncing;
-    static int debouncePin;
+    static bool debounce_timer_init;
+    static int debounce_pin;
 
-    static Button** buttonCollection;
-    static int* pinCollection;
-    static int buttonCounter;
-    static void debounceCallback(uint gpio, uint32_t events);
+    static Button** button_collection;
+    static int* pin_collection;
+    static int button_counter;
+    static void debounce_callback(uint gpio, uint32_t events);
 
-    int pinNum;
+    int pin_num;
     void (*callback)();
-    int indexInList;
+    int index_in_list;
     Button(int pinNum, void (*buttonCallback)());
     ~Button();
 };
 
-void debounceTimerCallback(uint alarmNumber);
+void debounce_timer_callback(uint alarmNumber);
 
 #endif // BUTTONS_HPP
