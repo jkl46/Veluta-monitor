@@ -18,7 +18,6 @@ extern int master_main(int argc, char** argv);
 extern int slave_main(int argc, char** argv);
 #endif
 
-
 /*_____________Code Below_________________________________*/
 
 // Prototypes
