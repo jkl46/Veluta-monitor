@@ -8,29 +8,29 @@
 #define I2C i2c0
 #define HUNDRED_KHZ (100 * 1000)
 
-#define PACKAGE_SIZE (8)
+#define PACKAGE_SIZE (16)
 #define WRITE_ADDRESS (0x50)
 #define READ_ADDRESS (0x50)
-
 
 class Flash
 {
 public:
     Flash(void);
 
-    /*! \brief Attempt to read from EEPROM 24LC04B at address
+    /*! \brief Attempt to read from EEPROM 24LC04B at address.
+    *       Data will need to be empty on call
     * \param address Address to data in EEPROM
-     *              (Between 0x00 and 0x0F)
-    * \return Pointer to data at address 
-    *      (default 0x00)
+    *              (Between 0x00 and 0xFF)
+    * \return Pointer to data at address
     */
     void read_from_address(uint8_t address, uint8_t* data);
 
     /*! \brief Attempt to write to EEPROM 24LC04B at address
+    *       Data will be deleted after completion
     * \param address Address to data in EEPROM
-    *              (Between 0x00 and 0x0F)
+    *              (Between 0x00 and 0xFF)
     * \param data Pointer to data to be written to EEPROM
-    *              (Max 128 bytes)
+    *              (Max 15 bytes, rest is trown away)
     */
     void write_to_address(uint8_t address, uint8_t* data);
 };
