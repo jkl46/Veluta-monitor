@@ -7,8 +7,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <pico/stdlib.h>
+#include <stdbool.h>
 
-void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BAUDRATE);
-char *read_UART(uart_inst_t *UART_ID);
+#define UART_data_bits 8
+#define UART_stop_bits 1
+#define UART_PARITY_NONE UART_PARITY_NONE
+#define UART_TX_PIN 5
+#define UART_RX_PIN 6
+#define BAUDRATE 9600
+#define UART_ID uart1
+#define MAX_ARRAY_SIZE 255
+
+void init_gps();
+char *read_gps();
 
 #endif 

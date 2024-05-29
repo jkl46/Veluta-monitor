@@ -1,9 +1,6 @@
-
 #include "gps.hpp"
-#define UART_data_bits 8
-#define UART_stop_bits 1
 
-void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BAUDRATE) 
+void init_gps() 
 {
     /*
     uart_init = Set UART baudrate
@@ -18,28 +15,37 @@ void init_UART(uart_inst_t *UART_ID, uint UART_TX_PIN, uint UART_RX_PIN, uint BA
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); 
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); 
     uart_set_hw_flow(UART_ID, false, false); 
-    uart_set_format(UART_ID, UART_data_bits, UART_stop_bits, UART_PARITY_NONE); 
+    uart_set_format(UART_ID, UART_data_bits, UART_stop_bits, UART_PARITY_NONE);
 }
 
-char *read_UART(uart_inst_t *UART_ID)
-{
+char* read_gps() {
     /*
-    const u_int8_t = Maximum size of the array of received data
-    static char = Array to store received data
-    return gps_data = Return received data
-
-    This function reads data from the UART,
-    and stores it in an array and returns the array
-
+    uart_is_readable = Check if UART is readable
+    uart_getc = Get a character from UART
+    This function reads the GPS data from the UART and returns it as a string
+    the while loop reads the data until it finds /n the end of the sentence
     */
-    const u_int8_t array_size = 255; 
-    static char gps_data[array_size]; 
+    static char gps_data[MAX_ARRAY_SIZE];
     int index = 0;
-    while (uart_is_readable(UART_ID) && index < array_size)
-    {
+    bool end_of_sentence = false;
+
+    while (uart_is_readable(UART_ID)) {
         char ch = uart_getc(UART_ID);
-        gps_data[index++] = ch;
+        if (index < MAX_ARRAY_SIZE - 1) {
+            gps_data[index++] = ch;
+            if (ch == '\n') {
+                end_of_sentence = true;
+                break;
+            }
+        } else {
+            index = 0;
+        }
     }
     gps_data[index] = '\0';
-    return gps_data; 
+
+    if (end_of_sentence) {
+        return gps_data;
+    } else {
+        return NULL;
+    }
 }
