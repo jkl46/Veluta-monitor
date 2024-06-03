@@ -8,14 +8,24 @@
 #include "pico/binary_info.h"
 #include "LoRa-RP2040.h"
 
-class LoRaReceiver {
+#include "LoRaData.hpp"
+
+class LoRaReceiver 
+{
 public:
+    /*! \brief Start LoRa receiver
+    */
     void start();
-    void read();
+    /*! \brief Read message from LoRa
+    * \param data LoRaData struct holding return data
+    */
+    void read(lora_data* data);
 
     // Add your public member functions here
 
 private:
+    void parse_message(lora_data* data);
+    void save_data(lora_data* data, char* message);
     // Add your private member variables and functions here
 };
 

@@ -9,9 +9,11 @@ int master_main(int argc, char** argv)
     receiver.start();
     while (1)
     {
-        receiver.read();
+        lora_data data;
+        receiver.read(&data);
+
+        // Use data struct to read data from LoRa
     }
     
-
     return 0;
 }
