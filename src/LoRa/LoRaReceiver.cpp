@@ -1,9 +1,10 @@
 
 #include "LoRaReceiver.h"
+#include "string"
 
-const char* message_start = "**";
-const char  message_data_start = '#';
-const char  message_data_end   = '@';
+const string message_start = "**";
+const char   message_data_start = '#';
+const char   message_data_end   = '@';
 
 //Inlude Library
 
@@ -29,7 +30,7 @@ void LoRaReceiver::read(lora_data* data)
 
 void LoRaReceiver::parse_message(lora_data* data)
 {
-   char* message;
+   string message;
    uint8_t character_counter = 0;
    // read packet
    while (LoRa.available()) {
