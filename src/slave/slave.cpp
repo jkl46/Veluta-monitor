@@ -10,7 +10,8 @@ int slave_main(int argc, char** argv)
 {
     // Main code here
     init_UART(uart0, 5, 6, 9600);
-    char* gps_data[2] = {"52.4995467",  "6.0799891"};
+    double gps_data_1 = 52.4995467;
+    double gps_data_2 = 6.0799891;
     LoRaTransmitter transmitter;
     transmitter.start();
 
@@ -19,8 +20,8 @@ int slave_main(int argc, char** argv)
         lora_data data;
         data.id = SLAVE_ID;
         data.hornet_id = 1;
-        data.latitude = gps_data[0];
-        data.latitude = gps_data[1];
+        data.latitude = gps_data_1;
+        data.latitude = gps_data_2;
         transmitter.send(&data);
         printf("Sending packets: ");
         printf("Packets send\n");
