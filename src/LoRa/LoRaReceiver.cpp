@@ -61,16 +61,16 @@ void LoRaReceiver::save_data(lora_data* data, string message)
    switch(save_data_counter)
    {
       case 1:
-         data->id = std::stoi(message);
+         data->id = std::stoi(message.c_str());
          break;
       case 2:
-         data->hornet_id = std::stoi(message);
+         data->hornet_id = std::stoi(message.c_str());
          break;
       case 3:
-         data->latitude = message;
+         data->latitude = std::stod(message.c_str());
          break;
       case 4:
-         data->longitude = message;
+         data->longitude = std::stod(message.c_str());
          save_data_counter = 0;
          break;
    }

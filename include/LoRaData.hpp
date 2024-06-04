@@ -12,9 +12,9 @@ struct lora_data
     /*! \brief ID of hornet that has been spotten */
     uint8_t hornet_id;
     /*! \brief Longitude of monitor */
-    string longitude;
+    double longitude;
     /*! \brief Latitude of monitor */
-    string latitude;
+    double latitude;
 };
 
 #endif
