@@ -9,9 +9,13 @@ int master_main(int argc, char** argv)
     receiver.start();
     while (1)
     {
-        receiver.read();
+        lora_data data;
+        if (receiver.read(&data))
+        {
+            // Use data struct to read data from LoRa
+            printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", data.id, data.hornet_id, data.longitude, data.latitude);
+        }
     }
     
-
     return 0;
 }
