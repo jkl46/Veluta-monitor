@@ -25,7 +25,7 @@ public:
 
 private:
     void parse_message(lora_data* data);
-    void save_data(lora_data* data, char* message);
+    void save_data(lora_data* data, string message);
     // Add your private member variables and functions here
 };
 

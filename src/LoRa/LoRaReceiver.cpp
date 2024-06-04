@@ -1,6 +1,5 @@
 
 #include "LoRaReceiver.h"
-#include "string"
 
 const string message_start = "**";
 const char   message_data_start = '#';
@@ -55,7 +54,7 @@ void LoRaReceiver::parse_message(lora_data* data)
 }
 
 static uint8_t save_data_counter = 0;
-void LoRaReceiver::save_data(lora_data* data, char* message)
+void LoRaReceiver::save_data(lora_data* data, string message)
 {
    save_data_counter++;
 
