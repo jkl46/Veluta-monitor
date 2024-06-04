@@ -29,7 +29,7 @@ int circle_circle_intersection(circle_t circle1, circle_t circle2, point_t *inte
 
     /* Determine the straight-line distance between the centers. */
     //d = sqrt((dy*dy) + (dx*dx));
-    d = hypot(dx,dy); // Suggested by Keith Briggs
+    d = hypot(dx, dy); // Suggested by Keith Briggs
 
     /* Check for solvability. */
     if (d > (r0 + r1))
@@ -49,7 +49,7 @@ int circle_circle_intersection(circle_t circle1, circle_t circle2, point_t *inte
     */
 
     /* Determine the distance from point 0 to point 2. */
-    a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
+    a = ((r0 * r0) - (r1 * r1) + (d * d)) / (2.0 * d) ;
 
     /* Determine the coordinates of point 2. */
     x2 = x0 + (dx * a/d);
@@ -58,13 +58,13 @@ int circle_circle_intersection(circle_t circle1, circle_t circle2, point_t *inte
     /* Determine the distance from point 2 to either of the
     * intersection points.
     */
-    h = sqrt((r0*r0) - (a*a));
+    h = sqrt((r0 * r0) - (a * a));
 
     /* Now determine the offsets of the intersection points from
     * point 2.
     */
-    rx = -dy * (h/d);
-    ry = dx * (h/d);
+    rx = -dy * (h / d);
+    ry = dx * (h / d);
 
     /* Determine the absolute intersection points. */
     intersection1->x = x2 + rx;
@@ -86,13 +86,13 @@ int line_line_intersect(line_t line1, line_t line2, point_t *result)
     double xi, yi;
 
     a1 = line1.slope;
-    c1 = line1.pos.x *line1.slope + line1.pos.y;
+    c1 = line1.pos.x * line1.slope + line1.pos.y;
 
     a2 = line2.slope;
-    c2 = line2.pos.x *line2.slope + line2.pos.y;
+    c2 = line2.pos.x * line2.slope + line2.pos.y;
 
-    xi = (c2-c1) / (a1-a2);
-    yi = (a2*c1 - a1*c2) / ((a1)-(a2)) * -1;
+    xi = (c2 - c1) / (a1 - a2);
+    yi = (a2 * c1 - a1 * c2) / ((a1) - (a2)) * -1;
 
     result->x = xi;
     result->y = yi;
@@ -106,16 +106,16 @@ double lon_degree_distance(double lon)
 {
   // Degrees to radians
   lon = lon * M_PI / 180.0;
-
-  return (111412.84*cos(lon)) - (93.5 * cos(3*lon)) + (0.118 * cos(5*lon));
+  return (111412.84 * cos(lon)) - (93.5 * cos(3 * lon)) + (0.118 * cos(5 * lon));
 }
 
 // Calculate length of degree of latitude at latitude x in meters
 // Reference: https://en.wikipedia.org/wiki/Geographic_coordinate_system
 double lat_degree_distance(double lat)
 {
+	// Degrees to radians
 	lat = lat * M_PI / 180.0;
-	return (111132.92 - 559.82*cos(2*lat)) + (1.175*cos(4*lat)) + (0.0023*cos(6*lat));
+	return (111132.92 - 559.82 * cos(2 * lat)) + (1.175 * cos(4 * lat)) + (0.0023 * cos(6 * lat));
 }
 
 int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *trilaterationCoord, coord_t *intersectionCoord)
@@ -218,7 +218,7 @@ int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *t
     line_line_intersect(line2, line3, &lineIntersection[1]);
     line_line_intersect(line1, line3, &lineIntersection[2]);
 
-    point_t intersectionResult = {(lineIntersection[0].x + lineIntersection[1].x + lineIntersection[2].x) / 3 * -1, (lineIntersection[0].y + lineIntersection[1].y +lineIntersection[2].y) / 3};
+    point_t intersectionResult = {(lineIntersection[0].x + lineIntersection[1].x + lineIntersection[2].x) / 3 * -1, (lineIntersection[0].y + lineIntersection[1].y + lineIntersection[2].y) / 3};
     point_to_coord(*(record1.pos), intersectionResult, intersectionCoord);
     // DONE
 
