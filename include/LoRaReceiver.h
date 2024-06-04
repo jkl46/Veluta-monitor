@@ -19,13 +19,11 @@ public:
     /*! \brief Read message from LoRa
     * \param data LoRaData struct holding return data
     */
-    void read(lora_data* data);
+    bool read(lora_data* data);
 
     // Add your public member functions here
 
 private:
-    void parse_message(lora_data* data);
-    void save_data(lora_data* data, string message);
     // Add your private member variables and functions here
 };
 

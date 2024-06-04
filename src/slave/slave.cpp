@@ -20,7 +20,7 @@ int slave_main(int argc, char** argv)
         lora_data data;
         data.id = SLAVE_ID;
         data.hornet_id = 1;
-        data.latitude = gps_data_1;
+        data.longitude = gps_data_1;
         data.latitude = gps_data_2;
         transmitter.send(&data);
         printf("Sending packets: ");
