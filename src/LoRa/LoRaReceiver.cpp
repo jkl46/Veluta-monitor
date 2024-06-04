@@ -30,11 +30,16 @@ void LoRaReceiver::read(lora_data* data)
 
 void LoRaReceiver::parse_message(lora_data* data)
 {
-   string message;
+   string message = "";
    uint8_t character_counter = 0;
    // read packet
    while (LoRa.available()) {
       char character = LoRa.read();
+      
+      // looking for data end key
+      if (character = message_data_end)
+         save_data(data, message);
+      
       message += character;
 
       // looking for message start key
@@ -44,10 +49,6 @@ void LoRaReceiver::parse_message(lora_data* data)
       // looking for data start key
       if (character = message_data_start)
          message = "";
-
-      // looking for data end key
-      if (character = message_data_end)
-         save_data(data, message);
 
       character_counter++;
    }
