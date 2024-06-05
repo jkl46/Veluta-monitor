@@ -1,12 +1,12 @@
 /*_________________CHANGE COMMENT BELOW__________________*/
 // #define MASTER
 #define SLAVE
-#define SLAVE_ID 1
-// #define SLAVE_ID 2
+#define SLAVE_ID 2
+// #define SLAVE_ID 3
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
 #warning "BUILDING MASTER!"
-extern int master_main(int argc, char** argv);
+extern int master::main(int argc, char** argv);
 
 #elif defined(SLAVE)
 #if !defined(SLAVE_ID)
@@ -14,7 +14,6 @@ extern int master_main(int argc, char** argv);
 #endif
 #warning "BUILDING SLAVE!"
 extern int slave_main(int argc, char** argv);
-
 #else
     #error No master or slave not specified!
 #endif
@@ -31,7 +30,11 @@ extern int slave_main(int argc, char** argv);
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
 /*___ Monitor ___*/
-this_monitor_t thisMonitor;
+#if defined(MASTER)
+this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0};
+#elif defined(SLAVE)
+this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID};
+#endif
 
 /*___ Buttons ___ */
 Button button1(BUTTON1_PIN, nullptr);
@@ -44,13 +47,6 @@ int main(int argc, char** argv)
     // TODO: remove in final version
     stdio_init_all();
 
-    // Set monitor type
-    #ifdef MASTER
-    thisMonitor.type = MASTER_MONITOR;
-    #else
-    thisMonitor.type = SLAVE_MONITOR;
-    thisMonitor.id = SLAVE_ID;
-    #endif
 
     /*___ GPS ___*/
     // TODO: Init GPS

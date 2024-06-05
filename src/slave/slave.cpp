@@ -1,13 +1,14 @@
 #include "main.hpp"
+
 #include "LoRaTransmitter.h"
-// #include "LoRaData.hpp" TODO: branch merge
+#include "LoRaData.hpp"
 
 // Defines
 
 // Prototypes
-void button1_callBack();
-void button2_callBack();
-void button3_callBack();
+void slave_button1_callBack();
+void slave_button2_callBack();
+void slave_button3_callBack();
 
 void send_hornet_data(int hornetID);
 
@@ -19,10 +20,10 @@ int slave_main(int argc, char** argv)
     // Init Lora
     transmitter.start();
 
-    // Register button callbacks
-    button1.callback = &button1_callBack;
-    button2.callback = &button2_callBack;
-    button3.callback = &button3_callBack;
+    // Attach button callbacks for slave
+    button1.callback = &slave_button1_callBack;
+    button2.callback = &slave_button2_callBack;
+    button3.callback = &slave_button3_callBack;
 
     while(1)
     {
@@ -31,8 +32,6 @@ int slave_main(int argc, char** argv)
     return 0;
 }
 
-/*
-TODO: check at merge
 void send_hornet_data(int hornetID)
 {
     lora_data data = {
@@ -43,19 +42,18 @@ void send_hornet_data(int hornetID)
     };
     transmitter.send(&data);
 }
-*/ 
 
-void button1_callBack()
+void slave_button1_callBack()
 {
     send_hornet_data(1);
 }
 
-void button2_callBack()
+void slave_button2_callBack()
 {
     send_hornet_data(2);
 }
 
-void button3_callBack()
+void slave_button3_callBack()
 {
     send_hornet_data(3);
 }
