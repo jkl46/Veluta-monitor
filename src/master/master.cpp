@@ -1,5 +1,6 @@
-#warning "BUILDING MASTER"
-#include <LoRaReceiver.h>
+#include "main.hpp"
+#include "LoRaReceiver.h"
+// #include "LoRaData.hpp" TODO: branch merge
 
 int master_main(int argc, char** argv)
 {

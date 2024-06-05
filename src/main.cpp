@@ -1,37 +1,62 @@
-/*________________CHANGE COMMENT BELOW__________________*/
-
-//define MASTER
+/*_________________CHANGE COMMENT BELOW__________________*/
+// #define MASTER
 #define SLAVE
-
-/*_______________________________________________________*/
-
-#include <pico/stdlib.h>
-#include "buttons.hpp"
-
-#ifdef MASTER
+#define SLAVE_ID 1
+// #define SLAVE_ID 2
+/*_________________ DO NOT CHANGE BELOW__________________*/
+#if defined(MASTER)
 #warning "BUILDING MASTER!"
 extern int master_main(int argc, char** argv);
-#endif
 
-#ifdef SLAVE
+#elif defined(SLAVE)
+#if !defined(SLAVE_ID)
+    #error No slave ID specified!
+#endif
 #warning "BUILDING SLAVE!"
 extern int slave_main(int argc, char** argv);
-#endif
 
-/*_____________Code Below_________________________________*/
+#else
+    #error No master or slave not specified!
+#endif
+/*___________________CODE BELOW__________________________*/
+
+// Includes
+#include <pico/stdlib.h>
+#include "buttons.hpp"
+#include "main.hpp"
+
+// Defines
 
 // Prototypes
-void button1Callback();
-void button2Callback();
-void button3Callback();
+
+// objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
+/*___ Monitor ___*/
+this_monitor_t thisMonitor;
+
+/*___ Buttons ___ */
+Button button1(BUTTON1_PIN, nullptr);
+Button button2(BUTTON2_PIN, nullptr);
+Button button3(BUTTON3_PIN, nullptr);
 
 int main(int argc, char** argv)
 {
+    // setup pico for serial printing. 
+    // TODO: remove in final version
     stdio_init_all();
 
-    Button btn1 = Button(11, &button1Callback);
-    Button btn2 = Button(14, &button2Callback);
-    Button btn3 = Button(15, &button3Callback);
+    // Set monitor type
+    #ifdef MASTER
+    thisMonitor.type = MASTER_MONITOR;
+    #else
+    thisMonitor.type = SLAVE_MONITOR;
+    thisMonitor.id = SLAVE_ID;
+    #endif
+
+    /*___ GPS ___*/
+    // TODO: Init GPS
+    // TODO: get gps location
+    //// Put latitude in thisMonitor.location.latitude
+    //// Put longitude in thisMonitor.location.longitude
     
     /*__________Run master or slave main________*/
     #ifdef MASTER
@@ -41,20 +66,4 @@ int main(int argc, char** argv)
     #ifdef SLAVE
     return slave_main(argc, argv);
     #endif
-}
-
-
-void button1Callback()
-{
-    printf("button1!\n");
-}
-
-void button2Callback()
-{
-    printf("button2!\n");
-}
-
-void button3Callback()
-{
-    printf("button3!\n");
 }
