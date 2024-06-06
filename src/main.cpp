@@ -1,7 +1,4 @@
-#include <Arduino.h> 
-#include "pico/stdlib.h"
-#include <trilaterate.hpp>
-#include <gps.hpp>
+/*________________CHANGE COMMENT BELOW__________________*/
 
 //define MASTER
 #define SLAVE
@@ -31,7 +28,6 @@ void button3Callback();
 int main(int argc, char** argv)
 {
     stdio_init_all();
-    init_gps();
 
     Button btn1 = Button(11, &button1Callback);
     Button btn2 = Button(14, &button2Callback);
