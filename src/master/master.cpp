@@ -13,11 +13,11 @@ void master_button3_callBack();
 void handle_hornet_data(lora_data* data);
 void handle_hornet_data(int id);
 
-// 2 bij 3 lijst hornet records pointers in flash of eeprom.
-void trilaterate_hornets(/*hornet records from eeprom*/); // TODO: can do after object of hornet in eeprom is known
+void trilaterate_hornets(/*hornet records from eeprom (preferably in 2x3 list of record**) */); // TODO: can do after object of hornet in eeprom is known
 
 // Objects
 LoRaReceiver receiver;
+lora_data hornetDataBuffer;
 
 int master_main(int argc, char** argv)
 {
@@ -31,8 +31,14 @@ int master_main(int argc, char** argv)
 
     while(1)
     {
-        // Receice hornet data.
-        // 
+        // Receive hornet data
+        if (receiver.read(&hornetDataBuffer))
+        {
+            handle_hornet_data(&hornetDataBuffer);
+
+            // Use data struct to read data from LoRa
+            printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
+        }
     }
     return 0;
 }
@@ -41,9 +47,8 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
 {
     coord_t trilaterationCoord; // object for trilateration result
     coord_t triangulationCoord; // object for triangulation result
-    double flightTimes[3];
+    double flightTimes[3]; // store flight times
 
-    
     // calculate flight time in seconds for hornets. use formula for appropriate area
     // double distance = formula(time1 - time2 / pow(10, 6))
     //..
@@ -53,9 +58,10 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
     record_t r2; // = {{lat, lon}, distance};
     record_t r3; // = {{lat, lon}, distance};
 
-    if(trilaterate(r1, r2, r3, &trilaterationCoord, &triangulationCoord) == -1 )
+    if(trilaterate(r1, r2, r3, &trilaterationCoord, &triangulationCoord) == -1)
     {
-        // TODO: What if trilateration fails?
+        // TODO: What if trilateration fails? maybe message to thing network?
+        return;
     }
 
     // TODO: Send trilateration coordinate to thing network along with some other shit
