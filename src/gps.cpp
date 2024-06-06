@@ -1,51 +1,73 @@
 #include "gps.hpp"
 
-void init_gps() 
-{
-    /*
-    uart_init = Set UART baudrate
-    gpio_set_function = set pin for UART function
-    uart_set_hw_flow = Set UART flow control
-    uart_set_format = Set UART format
-
-    This function initializes the UART, 
-    sets the baudrate, pin for UART function, flow control, and UART format
-    */
-    uart_init(UART_ID, BAUDRATE);
-    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); 
-    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); 
-    uart_set_hw_flow(UART_ID, false, false); 
-    uart_set_format(UART_ID, UART_data_bits, UART_stop_bits, UART_PARITY_NONE);
+gps::gps() {
+    init_gps();
 }
 
-char* read_gps() {
-    /*
-    uart_is_readable = Check if UART is readable
-    uart_getc = Get a character from UART
-    This function reads the GPS data from the UART and returns it as a string
-    the while loop reads the data until it finds /n the end of the sentence
-    */
-    static char gps_data[MAX_ARRAY_SIZE];
-    int index = 0;
+void gps::init_gps() {
+    uart_init(uart1, BAUDRATE);
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); 
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); 
+    uart_set_hw_flow(uart1, false, false); 
+    uart_set_format(uart1, UART_data_bits, UART_stop_bits, UART_PARITY_NONE);    
+}
+
+std::vector<char> gps::read_gps() {
+    std::vector<char> gps_data;
     bool end_of_sentence = false;
 
-    while (uart_is_readable(UART_ID)) {
-        char ch = uart_getc(UART_ID);
-        if (index < MAX_ARRAY_SIZE - 1) {
-            gps_data[index++] = ch;
-            if (ch == '\n') {
-                end_of_sentence = true;
-                break;
-            }
-        } else {
-            index = 0;
+    while (uart_is_readable(uart1) && !end_of_sentence) {
+        char ch = uart_getc(uart1);
+        gps_data.push_back(ch);
+        if (ch == '\n') {
+            end_of_sentence = true;
+            break;
         }
     }
-    gps_data[index] = '\0';
 
-    if (end_of_sentence) {
-        return gps_data;
-    } else {
-        return NULL;
+    if (!end_of_sentence) {
+        gps_data.clear();
     }
+
+    return gps_data;
+}
+
+Coordinates gps::send_gps(std::vector<char> gps_data) {
+    char gps_array[MAX_ARRAY_SIZE];
+    Coordinates coordinates;
+
+    for (size_t i = 0; i < gps_data.size(); i++) {
+        gps_array[i] = gps_data[i];
+    }
+    gps_array[gps_data.size()] = '\0';  // Ensure null termination
+
+    char *token = strtok(gps_array, ",");
+    int count = 0;
+
+    while (token != NULL) {
+        if (count == 3) {
+            coordinates.latitude = atof(token);
+        } else if (count == 4) {
+            coordinates.longitude = atof(token);
+        }
+        token = strtok(NULL, ",");
+        count++;
+    }
+    return coordinates;
+}
+
+char* gps::send_lon(){
+    Coordinates coordinates;
+    //convert double to char
+    char lon_str[10];
+    sprintf(lon_str, "%f", coordinates.longitude);
+    return lon_str;
+}
+
+char* gps::send_lat(){
+    Coordinates coordinates;
+    //convert double to char
+    char lat_str[10];
+    sprintf(lat_str, "%f", coordinates.latitude);
+    return lat_str;
 }

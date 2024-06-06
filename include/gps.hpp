@@ -8,17 +8,34 @@
 #include <string.h>
 #include <pico/stdlib.h>
 #include <stdbool.h>
+#include <vector>
+#include <cstdlib>
+#include <string>
 
-#define UART_data_bits 8
-#define UART_stop_bits 1
-#define UART_PARITY_NONE UART_PARITY_NONE
-#define UART_TX_PIN 5
-#define UART_RX_PIN 6
-#define BAUDRATE 9600
-#define UART_ID uart1
-#define MAX_ARRAY_SIZE 255
+struct Coordinates {
+    double latitude;
+    double longitude;;
+};
 
-void init_gps();
-char *read_gps();
+class gps {
+    public:
+        gps();
+        ~gps();
+        void init_gps();
+        std::vector<char> read_gps();
+        Coordinates send_gps(std::vector<char> gps_data);
+        char* send_lon();
+        char* send_lat();
+
+    private:
+        const int UART_data_bits = 8;
+        const int UART_stop_bits = 1;
+        const int UART_TX_PIN = 5;
+        const int UART_RX_PIN = 6;
+        const int BAUDRATE = 9600;
+        const int MAX_ARRAY_SIZE = 255;
+};
+
+
 
 #endif 
