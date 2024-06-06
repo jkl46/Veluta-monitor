@@ -6,7 +6,7 @@
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
 #warning "BUILDING MASTER!"
-extern int master::main(int argc, char** argv);
+extern int master_main(int argc, char** argv);
 
 #elif defined(SLAVE)
 #if !defined(SLAVE_ID)
