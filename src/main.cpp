@@ -1,7 +1,7 @@
 /*_________________CHANGE COMMENT BELOW__________________*/
-// #define MASTER
-#define SLAVE
-#define SLAVE_ID 2
+#define MASTER
+// #define SLAVE
+// #define SLAVE_ID 2
 // #define SLAVE_ID 3
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
@@ -42,7 +42,11 @@ Button button2(BUTTON2_PIN, nullptr);
 Button button3(BUTTON3_PIN, nullptr);
 
 int main(int argc, char** argv)
-{
+{        
+    // TODO: remove below
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, true);
+
     // setup pico for serial printing. 
     // TODO: remove in final version
     stdio_init_all();
@@ -62,4 +66,12 @@ int main(int argc, char** argv)
     #ifdef SLAVE
     return slave_main(argc, argv);
     #endif
+}
+
+
+void switchLed()
+{
+    static bool status = false;
+    status = (status) ? false : true;
+    gpio_put(LED_PIN, status);
 }

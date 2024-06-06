@@ -7,6 +7,8 @@
 #define BUTTON2_PIN 14
 #define BUTTON3_PIN 15
 
+#define LED_PIN 25
+
 enum monitor_type {SLAVE_MONITOR, MASTER_MONITOR};
 
 typedef struct {
@@ -24,5 +26,7 @@ extern this_monitor_t thisMonitor;
 extern Button button1;
 extern Button button2;
 extern Button button3;
+
+void switchLed();
 
 #endif // MAIN_HPP

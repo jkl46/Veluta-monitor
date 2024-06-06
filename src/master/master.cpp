@@ -22,7 +22,7 @@ lora_data hornetDataBuffer;
 int master_main(int argc, char** argv)
 {
     // Init LoRa
-    receiver.start();
+    // receiver.start();
 
     // Attach button callbacks for master
     button1.callback = &master_button1_callBack;
@@ -69,6 +69,7 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
 
 void handle_hornet_data(lora_data* data)
 {
+    switchLed();
     uint64_t timeOfSignal = time_us_64();
 
     // TODO: Create record that includes time and write this to flash.
@@ -93,17 +94,17 @@ void handle_hornet_data(int hornetID)
 }
 
 
-void button1_callBack()
+void master_button1_callBack()
 {
     handle_hornet_data(1);
 }
 
-void button2_callBack()
+void master_button2_callBack()
 {
     handle_hornet_data(2);
 }
 
-void button3_callBack()
+void master_button3_callBack()
 {
     handle_hornet_data(3);
 }
