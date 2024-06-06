@@ -1,32 +1,60 @@
-#warning "BUILDING SLAVE"
-#include <LoRaTransmitter.h>
-#include <gps.hpp>
+#include "main.hpp"
 
+#include "LoRaTransmitter.h"
 #include "LoRaData.hpp"
 
-#define SLAVE_ID 1
-//#define SLAVE_ID 2
+// Defines
+
+// Prototypes
+void slave_button1_callBack();
+void slave_button2_callBack();
+void slave_button3_callBack();
+
+void send_hornet_data(int hornetID);
+
+// Objects
+LoRaTransmitter transmitter;
+
 int slave_main(int argc, char** argv)
 {
-    // Main code here
-    init_UART(uart0, 5, 6, 9600);
-    double gps_data_1 = 52.4995467;
-    double gps_data_2 = 6.0799891;
-    LoRaTransmitter transmitter;
-    transmitter.start();
+    // Init Lora
+    // transmitter.start();
 
-    while (1) {
-        // send
-        lora_data data;
-        data.id = SLAVE_ID;
-        data.hornet_id = 1;
-        data.longitude = gps_data_1;
-        data.latitude = gps_data_2;
-        transmitter.send(&data);
-        printf("Sending packets: ");
-        printf("Packets send\n");
-        sleep_ms(5000);
+    // Attach button callbacks for slave
+    button1.callback = &slave_button1_callBack;
+    button2.callback = &slave_button2_callBack;
+    button3.callback = &slave_button3_callBack;
+
+    while(1)
+    {
+        // TODO: sleep mode?
     }
-
     return 0;
+}
+
+void send_hornet_data(int hornetID)
+{
+    switchLed();
+    // lora_data data = {
+    //     (uint8_t) thisMonitor.id,
+    //     hornetID,
+    //     thisMonitor.location.longitude,
+    //     thisMonitor.location.latitude,
+    // };
+    // transmitter.send(&data);
+}
+
+void slave_button1_callBack()
+{
+    send_hornet_data(1);
+}
+
+void slave_button2_callBack()
+{
+    send_hornet_data(2);
+}
+
+void slave_button3_callBack()
+{
+    send_hornet_data(3);
 }
