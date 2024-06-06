@@ -1,8 +1,5 @@
 #include "gps.hpp"
 
-gps::gps() {
-    init_gps();
-}
 
 void gps::init_gps() {
     uart_init(uart1, BAUDRATE);
@@ -35,6 +32,8 @@ std::vector<char> gps::read_gps() {
 Coordinates gps::send_gps(std::vector<char> gps_data) {
     char gps_array[MAX_ARRAY_SIZE];
     Coordinates coordinates;
+    coordinates.longitude = 0.0; // Initialize longitude
+    coordinates.latitude = 0.0; // Initialize latitude
 
     for (size_t i = 0; i < gps_data.size(); i++) {
         gps_array[i] = gps_data[i];
@@ -56,18 +55,12 @@ Coordinates gps::send_gps(std::vector<char> gps_data) {
     return coordinates;
 }
 
-char* gps::send_lon(){
+double gps::recieve_lon(){
     Coordinates coordinates;
-    //convert double to char
-    char lon_str[10];
-    sprintf(lon_str, "%f", coordinates.longitude);
-    return lon_str;
+    return coordinates.longitude;
 }
 
-char* gps::send_lat(){
+double gps::recieve_lat(){
     Coordinates coordinates;
-    //convert double to char
-    char lat_str[10];
-    sprintf(lat_str, "%f", coordinates.latitude);
-    return lat_str;
+    return coordinates.latitude;
 }

@@ -19,13 +19,20 @@ struct Coordinates {
 
 class gps {
     public:
-        gps();
+
+    // Constructor
+        gps() : latitude(0.0), longitude(0.0) {}
+    //Functions
         ~gps();
         void init_gps();
         std::vector<char> read_gps();
         Coordinates send_gps(std::vector<char> gps_data);
-        char* send_lon();
-        char* send_lat();
+        double recieve_lon();
+        double recieve_lat();
+    //Variables
+        double latitude;
+        double longitude;
+
 
     private:
         const int UART_data_bits = 8;
