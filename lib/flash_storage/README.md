@@ -20,10 +20,13 @@ flash.read_from_address(0x01, data);
 ```
 
 # wiring diagram
-| 24LC04B | RP2040 | 3V battry |
-| :---:   | :---:  | :---:     |
-| Vcc     | -      | Vcc       |
-| Vss     | -      | GND       |
-| SDA     | GP4    | -         |
-| SCL     | GP5    | -         |
-| WP      | GND    | -         |
+| 24LC04B | RP2040 |
+| :---:   | :---:  |
+| A0      | -      |
+| A1      | -      |
+| A2      | -      |
+| Vss     | GND    |
+| SDA     | GP4    |
+| SCL     | GP5    |
+| WP      | GND    |
+| Vcc     | 3v3    |

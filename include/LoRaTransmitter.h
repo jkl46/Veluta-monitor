@@ -6,13 +6,21 @@
 #include "pico/binary_info.h"
 #include "LoRa-RP2040.h"
 
-class LoRaTransmitter {
+#include "LoRaData.hpp"
+
+class LoRaTransmitter 
+{
 public:
     // Constructor and destructor (if needed)
 
     // Add any necessary member functions here
+    /*! \brief Initialize LoRa transmit
+    */
     void start();
-    void send(char* Latidude, char* Longitude, uint8_t slave_id, uint8_t hornet_id);
+    /*! \brief Send data over LoRa
+    * \param data LoRaData struct to be send over LoRa to another monitor
+    */
+    void send(lora_data* data);
 private:
     // Add any necessary member variables here
 

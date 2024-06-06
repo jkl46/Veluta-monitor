@@ -1,6 +1,7 @@
 #include <LoRaTransmitter.h>
 
-void LoRaTransmitter::start(){
+void LoRaTransmitter::start()
+{
     if (!LoRa.begin(500E6)) {
         printf("Starting LoRa failed!\n");
     }
@@ -8,8 +9,10 @@ void LoRaTransmitter::start(){
     printf("LoRa Started\n");
 }
 
-void LoRaTransmitter::send(char* latitude, char* longitude, uint8_t slave_id, uint8_t hornet_id){
+void LoRaTransmitter::send(lora_data* data)
+{
+    printf("**SALVE_ID: #%d@;gps: latitude #%f@;longitude #%f@;Hornet_id: #%d@", data->id, data->latitude, data->longitude, data->hornet_id);
     LoRa.beginPacket();
-    LoRa.print("SLAVE_ID: #" + std::to_string(slave_id) + "gps: latitude #"+ latitude +"longitude #" + longitude + "Hornet_id: #" + std::to_string(hornet_id));	
+    LoRa.print("**SLAVE_ID: #" + std::to_string(data->id) + "@;gps: latitude #"+ std::to_string(data->latitude) +"@;longitude #" + std::to_string(data->longitude) + "@;Hornet_id: #" + std::to_string(data->hornet_id) + "@");	
     LoRa.endPacket();
 }
