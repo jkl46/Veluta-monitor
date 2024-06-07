@@ -37,7 +37,7 @@ int master_main(int argc, char** argv)
             handle_hornet_data(&hornetDataBuffer);
 
             // Use data struct to read data from LoRa
-            printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
+            printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.monitor_id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
         }
     }
     return 0;
