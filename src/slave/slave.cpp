@@ -18,7 +18,7 @@ int slave_main(int argc, char** argv)
     while (1) {
         // send
         lora_data data;
-        data.id = SLAVE_ID;
+        data.monitor_id = SLAVE_ID;
         data.hornet_id = 1;
         data.longitude = gps_data_1;
         data.latitude = gps_data_2;
