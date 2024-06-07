@@ -15,7 +15,7 @@ void save_data(lora_data* data, string message)
    switch(save_data_counter)
    {
       case 1:
-         data->id = std::stoi(message.c_str());
+         data->monitor_id = std::stoi(message.c_str());
          break;
       case 2:
          data->latitude = std::stod(message.c_str());
