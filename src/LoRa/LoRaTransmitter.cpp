@@ -11,8 +11,7 @@ void LoRaTransmitter::start()
 
 void LoRaTransmitter::send(lora_data* data)
 {
-    printf("**SALVE_ID: #%d@;gps: latitude #%f@;longitude #%f@;Hornet_id: #%d@", data->id, data->latitude, data->longitude, data->hornet_id);
     LoRa.beginPacket();
-    LoRa.print("**SLAVE_ID: #" + std::to_string(data->id) + "@;gps: latitude #"+ std::to_string(data->latitude) +"@;longitude #" + std::to_string(data->longitude) + "@;Hornet_id: #" + std::to_string(data->hornet_id) + "@");	
+    LoRa.print("**SLAVE_ID: #" + std::to_string(data->id) + "@;gps: latitude #"+ std::to_string(data->latitude) +"@;longitude #" + std::to_string(data->longitude) + "@;AreaCode: #" + std::to_string(data->area_code) + "@;Hornet_id: #" + std::to_string(data->hornet_id) + "@");	
     LoRa.endPacket();
 }

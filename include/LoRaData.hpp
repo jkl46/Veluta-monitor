@@ -8,9 +8,11 @@
 struct lora_data
 {
     /*! \brief ID of monitor */
-    uint8_t id;
+    uint8_t monitor_id;
     /*! \brief ID of hornet that has been spotten */
     uint8_t hornet_id;
+    /*! \brief Type of area the monitor is placed in*/
+    uint8_t area_code;
     /*! \brief Longitude of monitor */
     double longitude;
     /*! \brief Latitude of monitor */
