@@ -108,26 +108,6 @@ int line_line_intersect(line_t line1, line_t line2, point_t *result)
     return 1;
 }
 
-// Calculate length of degree of longitude at latitude x in meters
-// Reference: https://en.wikipedia.org/wiki/Geographic_coordinate_system
-/* Function has been change to define*/
-// double lon_degree_distance(double lon)
-// {
-//   // Degrees to radians
-//   lon = lon * M_PI / 180.0;
-//   return (111412.84 * cos(lon)) - (93.5 * cos(3 * lon)) + (0.118 * cos(5 * lon));
-// }
-
-// Calculate length of degree of latitude at latitude x in meters
-// Reference: https://en.wikipedia.org/wiki/Geographic_coordinate_system
-/* Function has been change to define*/
-// double lat_degree_distance(double lat)
-// {
-// 	// Degrees to radians
-// 	lat = lat * M_PI / 180.0;
-// 	return (111132.92 - 559.82 * cos(2 * lat)) + (1.175 * cos(4 * lat)) + (0.0023 * cos(6 * lat));
-// }
-
 int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *trilaterationCoord, coord_t *intersectionCoord)
 {
     // Convert GPS into relative positions in meters
