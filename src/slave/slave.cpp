@@ -25,6 +25,7 @@ int slave_main(int argc, char** argv)
     button2.callback = &slave_button2_callBack;
     button3.callback = &slave_button3_callBack;
 
+
     while(1)
     {
         // TODO: sleep mode?
