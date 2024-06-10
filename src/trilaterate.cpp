@@ -133,15 +133,15 @@ int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *t
     
     if (!circle_circle_intersection(circle1, circle2, &intersectionPoints[0][0], &intersectionPoints[0][1]))
     {
-      // TODO: handle error
+      return 0;
     }
     if (!circle_circle_intersection(circle2, circle3, &intersectionPoints[1][0], &intersectionPoints[1][1]))
     {
-      // TODO: Handle error
+      return 0;
     }
     if (!circle_circle_intersection(circle1, circle3, &intersectionPoints[2][0], &intersectionPoints[2][1]))
     {
-      // TODO: Handle error
+      return 0;
     }
 
     point_t *closestPoints[3];
@@ -177,7 +177,6 @@ int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *t
     }
 
     // calculate average of intersection
-    // TODO: Handle average if no 3 points
     double xAvg, yAvg;
     for (size_t i = 0; i < 3; i++)
     {
@@ -204,19 +203,21 @@ int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *t
 
     // Calculate crossing point of lines between circle intersections
     point_t lineIntersection[3];
-    line_line_intersect(line1, line2, &lineIntersection[0]);
-    line_line_intersect(line2, line3, &lineIntersection[1]);
-    line_line_intersect(line1, line3, &lineIntersection[2]);
+    if(!line_line_intersect(line1, line2, &lineIntersection[0]))
+      return 0;
+    if (!line_line_intersect(line2, line3, &lineIntersection[1]))
+      return 0;
+    if(!line_line_intersect(line1, line3, &lineIntersection[2]))
+      return 0;
+    
 
     point_t intersectionResult = {(lineIntersection[0].x + lineIntersection[1].x + lineIntersection[2].x) / 3 * -1, (lineIntersection[0].y + lineIntersection[1].y + lineIntersection[2].y) / 3};
     point_to_coord(*(record1.pos), intersectionResult, intersectionCoord);
-    // DONE
 
     return 1;
 }
 
 // Return length in meters between 2 coordinates
-
 double get_distance(coord_t point1, coord_t point2)
 {
     double xi, yi;
@@ -231,7 +232,6 @@ double get_distance(coord_t point1, coord_t point2)
 }
 
 // Set point as coordinate from base coordinate
-
 int point_to_coord(coord_t base, point_t point, coord_t *result)
 {
     double latLength = lat_degree_distance(base.lat);
@@ -244,7 +244,6 @@ int point_to_coord(coord_t base, point_t point, coord_t *result)
 }
 
 // Return length of a to b
-
 double get_difference(double a, double b)
 {
     if (a < b)
