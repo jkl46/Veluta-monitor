@@ -8,18 +8,17 @@
 
 #define FLASH_TARGET_OFFSET (256 * 1024)                                    // Base of flash region
 
-// Must be multiple of 4KB
-#define FLASH_INFO_OFFSET 0
+#define FLASH_INFO_OFFSET 0  // Must be multiple of 4KB
 #define RECORD_OFFSET FLASH_SECTOR_SIZE
 
-#define WRITE_FLASH_INFO_ADRESS (FLASH_TARGET_OFFSET + FLASH_INFO_OFFSET)                         // Adress where flash info is stored
-#define WRITE_RECORDS_ADRESS (FLASH_TARGET_OFFSET + RECORD_OFFSET)                                // Adress where hornet records are stored
+#define WRITE_FLASH_INFO_ADRESS (FLASH_TARGET_OFFSET + FLASH_INFO_OFFSET)       // Adress where flash info is stored
+#define WRITE_RECORDS_ADRESS (FLASH_TARGET_OFFSET + RECORD_OFFSET)              // Adress where hornet records are stored
 
 #define READ_TARGET_ADRESS   (uint8_t*)(XIP_BASE + FLASH_TARGET_OFFSET)
 #define READ_FLASH_INFO_ADRESS (uint8_t*)(XIP_BASE + WRITE_FLASH_INFO_ADRESS)
 #define READ_RECORDS_ADRESS  (uint8_t*)(XIP_BASE + WRITE_RECORDS_ADRESS)
 
-#define FLASH_CHECKSUM (uint16_t) 0x1338
+#define FLASH_CHECKSUM (uint16_t) 0x1448
 #define RECORD_CHECKSUM FLASH_CHECKSUM
 
 #define RECORD_MAX 100
@@ -49,7 +48,6 @@ public:
     Flash();
     int insert_record(hornet_record_t *record);
     void remove_record(int index);
-    void print_records();
 };
 
 void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest);

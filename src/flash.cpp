@@ -11,7 +11,6 @@ Flash::Flash()
     // If invalid flash info
     if (this->flashInfo->checksum != FLASH_CHECKSUM)
     {
-        // blinkLed(100);
         // Create new flash Info
         flash_info_t newFlashInfo;
         newFlashInfo.checksum = FLASH_CHECKSUM;
@@ -49,19 +48,26 @@ Flash::Flash()
 
 int Flash::insert_record(hornet_record_t* record)
 {
-    int availableReferenceIndex = 0;
-    while(this->hornetRecordReference[availableReferenceIndex] != nullptr && availableReferenceIndex < RECORD_MAX)
-        availableReferenceIndex++;
-
+    int recordIndex = 0;
+    for (size_t i = 0; i < RECORD_MAX; i++)
+    {
+        if (this->hornetRecordReference[i] == nullptr)
+        {
+            recordIndex = i;
+            break;
+        }
+    }
+    
     for (size_t i = 0; i < RECORD_MAX; i++)
     {
         hornet_record_t* thisRecord_ptr = (hornet_record_t*) (READ_RECORDS_ADRESS + (FLASH_PAGE_SIZE * i));
         if (thisRecord_ptr->checksum != RECORD_CHECKSUM)
         {
-            
+
+
             write_flash_page((uint8_t*) record, sizeof(hornet_record_t), WRITE_RECORDS_ADRESS + (FLASH_PAGE_SIZE * i)); 
             
-            this->hornetRecordReference[availableReferenceIndex] = thisRecord_ptr;
+            this->hornetRecordReference[recordIndex] = thisRecord_ptr;
             return 1;
         }
     }
@@ -69,42 +75,19 @@ int Flash::insert_record(hornet_record_t* record)
     return 0;
 }
 
-
-
-void Flash::print_records()
+void Flash::remove_record(int index)
 {
-    // int n = 0;
-    // printf("Hornet reference!");
-    // for (size_t x = 0; x < RECORD_MAX; x++)
-    // {
-    //     if (this->hornetRecordReference[x] != nullptr)
-    //     {
-    //         printf("%p ", this->hornetRecordReference[x]);
-    //     } else
-    //     {
-    //         printf("EMPTY ");
-    //     }
-    // }
-    int n = 0;
-    char printBuff[20];
-    for (size_t i = 0; i < RECORD_MAX; i++)
-    {
-        // If valid record at adress
-        if (this->hornetRecordReference[i] != nullptr)
-        {
-            hornet_record_t* thisRecord_ptr = this->hornetRecordReference[i];
-            printf("%llu", 0x12345678);
-            stdio_flush();
-        }
-    }
+    // TODO: implement removal of record
     
-    // }
-    // printf("\n");
+    // if record not at end of sector
+    // copy content to ram
+    // reset sector in flash
+    // remove page in ram copy
+    // rewrite flash region
 }
 
 void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest)
 {
-
     uint8_t page[FLASH_PAGE_SIZE];
     int i = 0;
     for (; i < FLASH_PAGE_SIZE; i++)
@@ -126,9 +109,6 @@ void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest)
 
     // Reenable interrupts
     restore_interrupts(interrupts);
-
-    printf("WRITTEN PAGE!");
-    stdio_flush();
 }
 
 void print_record(hornet_record_t* thisRecord_ptr)
