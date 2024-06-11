@@ -4,26 +4,31 @@
 #include <hardware/gpio.h>
 #include <stdlib.h>
 
+
 Flash::Flash()
 {
     this->flashInfo = (flash_info_t*) READ_FLASH_INFO_ADRESS;
 
+    flash_info_t newFlashInfo = {FLASH_CHECKSUM};
+
     // If invalid flash info
-    if (this->flashInfo->checksum != FLASH_CHECKSUM)
+    if (this->flashInfo->checksum != FLASH_CHECKSUM || true)
     {
         // Create new flash Info
         flash_info_t newFlashInfo;
-        newFlashInfo.checksum = FLASH_CHECKSUM;
         newFlashInfo.bootNumber = 0;
-        
-        // Erase flash info region
-        flash_range_erase(WRITE_FLASH_INFO_ADRESS, RECORD_OFFSET);
-        // Program flash info region
-        write_flash_page((uint8_t*) &newFlashInfo, (uint8_t) sizeof(flash_info_t), WRITE_FLASH_INFO_ADRESS);
 
         // Erase record region
         flash_range_erase(WRITE_RECORDS_ADRESS, ((FLASH_PAGE_SIZE * RECORD_MAX) + (FLASH_SECTOR_SIZE % (FLASH_PAGE_SIZE *RECORD_MAX))));
+    } 
+    else
+    {
+        newFlashInfo.bootNumber = this->flashInfo->bootNumber + 1;
     }
+    // Erase flash info region
+    flash_range_erase(WRITE_FLASH_INFO_ADRESS, RECORD_OFFSET);
+    // Program flash info region
+    write_flash_page((uint8_t*) &newFlashInfo, (uint8_t) sizeof(flash_info_t), WRITE_FLASH_INFO_ADRESS);
 
     // Read record region
     int n = 0;
@@ -71,7 +76,6 @@ int Flash::insert_record(hornet_record_t* record)
             return 1;
         }
     }
-
     return 0;
 }
 
@@ -111,6 +115,31 @@ void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest)
     restore_interrupts(interrupts);
 }
 
+void Flash::print_record_references()
+{
+    for (size_t i = 0; i < RECORD_MAX; i++)
+    {
+        if (this->hornetRecordReference[i] != nullptr)
+        {
+            printf("Index: %d, addr: %p\n", i, this->hornetRecordReference[i]);
+        }
+    }
+    
+}
+
+void reverse_copy_bytes(uint8_t* src, uint8_t* dest, int len)
+{
+    for (size_t i = 0; i < len; i++)
+        dest[i] = src[len-i];
+}
+
+void copy_bytes(uint8_t* src, uint8_t* dest, int len)
+{
+    for (size_t i = 0; i < len; i++)
+        dest[i] = src[i];
+    
+}
+
 void print_record(hornet_record_t* thisRecord_ptr)
 {
 	printf("boot number: %d\nat ticks after boot: %llu\nHornet DATA:\nMonitor ID:%d\nHornet ID:%d\nArea code: %d\nlatitude: %lf\nLongitude: %lf\n", 
@@ -135,3 +164,5 @@ void print_buf(const uint8_t *buf, size_t len) {
     }
     stdio_flush();
 }
+
+

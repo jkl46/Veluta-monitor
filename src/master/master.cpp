@@ -5,6 +5,7 @@
 #include "flash.hpp"
 
 // Defines
+#define MICRO_SECONDS 1000000 // micro seconds in seconds
 
 // Prototypes
 void master_button1_callBack();
@@ -23,6 +24,10 @@ Flash flash = Flash();
 /* LoRa */
 LoRaReceiver receiver;
 lora_data hornetDataBuffer;
+
+/* trilaterate */
+coord_t monitorBuffer[MONITOR_COUNT];
+record_t recordBuffer[MONITOR_COUNT];
 
 int master_main(int argc, char** argv)
 {
@@ -73,24 +78,108 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
     // TODO: Send trilateration coordinate to thing network along with some other shit
 }
 
+bool is_trilateration_possible()
+{
+    uint32_t avgTimeBuffer[MONITOR_COUNT];
+
+    // Empty average time array
+    for (size_t i = 0; i < MONITOR_COUNT; i++)
+        avgTimeBuffer[i] = 0;
+    
+    // create copy for record reference
+    hornet_record_t* hornetReferenceCopy[RECORD_MAX];
+
+    for (size_t i = 0; i < RECORD_MAX; i++)
+        hornetReferenceCopy[i] = flash.hornetRecordReference[i];
+
+
+    for (size_t i = 0; i < RECORD_MAX; i++)
+    {
+        if (hornetReferenceCopy[i] == nullptr)
+            continue;
+        
+        for (size_t x = i+1; x < RECORD_MAX; x++)
+        {
+            if (hornetReferenceCopy[x] == nullptr)
+                continue;
+            
+            // If record from the same boot and monitor
+            if (hornetReferenceCopy[i]->bootNumber == hornetReferenceCopy[x]->bootNumber && 
+                hornetReferenceCopy[i]->data.monitor_id == hornetReferenceCopy[x]->data.monitor_id &&
+                hornetReferenceCopy[i]->data.hornet_id == hornetReferenceCopy[x]->data.hornet_id)
+            { 
+                uint8_t monitorNum = hornetReferenceCopy[i]->data.monitor_id;
+
+                // uint64_t - uint64_t seems to raise problems. Converting microseconds to seconds here.
+                uint32_t timeDifference = (hornetReferenceCopy[x]->timeOfCreation / MICRO_SECONDS) - (hornetReferenceCopy[i]->timeOfCreation / MICRO_SECONDS);
+
+                // Remove used records from array
+                hornetReferenceCopy[i] = nullptr;
+                hornetReferenceCopy[x] = nullptr;
+
+                if (avgTimeBuffer[monitorNum] == 0) // If first record in buffer, the average cannot be calculated
+                {
+                    avgTimeBuffer[monitorNum] = timeDifference; 
+                }
+                else
+                {
+                    avgTimeBuffer[monitorNum] = (avgTimeBuffer[monitorNum] + timeDifference) / 2;
+                }
+            }
+        }
+        
+    }
+
+    // Check if trilateration is possible
+    for (size_t i = 0; i < MONITOR_COUNT; i++)
+    {
+        // If no average for monitor then
+        if (avgTimeBuffer[i] == 0) 
+        {
+            return false;
+        }
+    }
+    
+    printf("times: %d, %d, %d\n", avgTimeBuffer[0], avgTimeBuffer[1], avgTimeBuffer[2]);
+
+    return true;
+}
+
 void handle_hornet_data(lora_data* data)
 {
-    uint64_t timeOfSignal = time_us_64();
+    // Create record
+    hornet_record_t thisRecord = 
+    {
+        RECORD_CHECKSUM,
+        flash.flashInfo->bootNumber,
+        time_us_64(),
+        *data
+    };
 
-    // TODO: Create record that includes time and write this to flash.
+    flash.insert_record(&thisRecord);
 
-    // TODO: check if enough records are saved in flash for trilateration.
-    // if (trilateration possible)
-    // trilaterate_hornets;
+    if(!is_trilateration_possible())
+    {
+        return;
+    }
+    // Trilateration is possible
+
+    coord_t trilaterationResult;
+
+    // printf("times: %d, %d, %d\n", avgTimeBuffer[0], avgTimeBuffer[1], avgTimeBuffer[2]);
+    // Trilateration is possible. Times are in avgTimeBuffer.
+
 }
+
 
 // Handle hornet signal when signal comes from master. Not recieved from slave.
 // Create record and use handler for slave
 void handle_hornet_data(int hornetID)
 {
     lora_data data = {
-        0, // Master has no ID
-        hornetID,
+        (uint16_t) hornetID, // Master has no ID
+        (uint8_t) hornetID,
+        (uint8_t) 1, 
         thisMonitor.location.longitude,
         thisMonitor.location.latitude,
     };
@@ -101,15 +190,15 @@ void handle_hornet_data(int hornetID)
 
 void master_button1_callBack()
 {
-    handle_hornet_data(1);
+    handle_hornet_data(0);
 }
 
 void master_button2_callBack()
 {
-    handle_hornet_data(2);
+    handle_hornet_data(1);
 }
 
 void master_button3_callBack()
 {
-    handle_hornet_data(3);
+    handle_hornet_data(2);
 }

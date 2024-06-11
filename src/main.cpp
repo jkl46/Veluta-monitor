@@ -1,8 +1,8 @@
 /*_________________CHANGE COMMENT BELOW__________________*/
 #define MASTER
 // #define SLAVE
+// #define SLAVE_ID 1
 // #define SLAVE_ID 2
-// #define SLAVE_ID 3
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
 #warning "BUILDING MASTER!"
@@ -23,7 +23,6 @@ extern int slave_main(int argc, char** argv);
 #include <pico/stdlib.h>
 #include "buttons.hpp"
 #include "main.hpp"
-#include "flash.hpp"
 
 
 // Defines
@@ -58,6 +57,8 @@ int main(int argc, char** argv)
     // TODO: get gps location
     //// Put latitude in thisMonitor.location.latitude
     //// Put longitude in thisMonitor.location.longitude
+    thisMonitor.location.latitude = 5.4321;
+    thisMonitor.location.longitude = 1.2345;
 
     /*__________Run master or slave main________*/
     #ifdef MASTER

@@ -9,6 +9,8 @@
 
 #define LED_PIN 25
 
+#define MONITOR_COUNT 3
+
 enum monitor_type {SLAVE_MONITOR, MASTER_MONITOR};
 
 typedef struct {
