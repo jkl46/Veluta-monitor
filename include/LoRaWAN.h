@@ -1,10 +1,7 @@
 #ifndef LORAWAN_H
 #define LORAWAN_H
 
-#include "pico/stdlib.h"
-#include "hardware/uart.h"
-#include <string>
-#include "hornet.hpp"
+#include <stdint.h>
 
 #define BAUDRATE 9600
 #define UART_TX_PIN 4
