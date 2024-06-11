@@ -2,6 +2,7 @@
 #include "LoRaReceiver.h"
 #include "LoRaData.hpp" 
 #include "trilaterate.hpp"
+#include "flash.hpp"
 
 // Defines
 
