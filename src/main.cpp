@@ -31,8 +31,6 @@ extern int slave_main(int argc, char** argv);
 // Prototypes
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
-/*___ Flash ___*/
-Flash flash = Flash();
 
 /*___ Monitor ___*/
 #if defined(MASTER)
