@@ -16,6 +16,10 @@ void handle_hornet_data(int id);
 void trilaterate_hornets(/*hornet records from eeprom (preferably in 2x3 list of record**) */); // TODO: can do after object of hornet in eeprom is known
 
 // Objects
+/* Flash */
+Flash flash = Flash();
+
+/* LoRa */
 LoRaReceiver receiver;
 lora_data hornetDataBuffer;
 
