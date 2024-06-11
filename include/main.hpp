@@ -27,7 +27,4 @@ extern Button button1;
 extern Button button2;
 extern Button button3;
 
-void switchLed();
-void blinkLed(int ms);
-
 #endif // MAIN_HPP

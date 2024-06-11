@@ -25,6 +25,7 @@ extern int slave_main(int argc, char** argv);
 #include "main.hpp"
 #include "flash.hpp"
 
+
 // Defines
 
 // Prototypes
@@ -40,9 +41,6 @@ this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0};
 this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID};
 #endif
 
-void btn1Callback();
-void btn2Callback();
-
 /*___ Buttons ___ */
 Button button1(BUTTON1_PIN, nullptr);
 Button button2(BUTTON2_PIN, nullptr);
@@ -57,15 +55,12 @@ int main(int argc, char** argv)
     stdio_init_all();
     stdio_flush();
 
-    for(;;)
-    {
-    }
-
     /*___ GPS ___*/
     // TODO: Init GPS
     // TODO: get gps location
     //// Put latitude in thisMonitor.location.latitude
     //// Put longitude in thisMonitor.location.longitude
+
     /*__________Run master or slave main________*/
     #ifdef MASTER
     return master_main(argc, argv);
