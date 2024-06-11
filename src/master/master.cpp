@@ -38,6 +38,7 @@ int master_main(int argc, char** argv)
 
             // Use data struct to read data from LoRa
             printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
+
         }
     }
     return 0;
@@ -69,7 +70,6 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
 
 void handle_hornet_data(lora_data* data)
 {
-    switchLed();
     uint64_t timeOfSignal = time_us_64();
 
     // TODO: Create record that includes time and write this to flash.

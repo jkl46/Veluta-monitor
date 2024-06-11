@@ -23,12 +23,17 @@ extern int slave_main(int argc, char** argv);
 #include <pico/stdlib.h>
 #include "buttons.hpp"
 #include "main.hpp"
+#include "flash.hpp"
+
 
 // Defines
 
 // Prototypes
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
+/*___ Flash ___*/
+Flash flash = Flash();
+
 /*___ Monitor ___*/
 #if defined(MASTER)
 this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0};
@@ -44,20 +49,18 @@ Button button3(BUTTON3_PIN, nullptr);
 int main(int argc, char** argv)
 {        
     // TODO: remove below
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, true);
 
     // setup pico for serial printing. 
     // TODO: remove in final version
     stdio_init_all();
-
+    stdio_flush();
 
     /*___ GPS ___*/
     // TODO: Init GPS
     // TODO: get gps location
     //// Put latitude in thisMonitor.location.latitude
     //// Put longitude in thisMonitor.location.longitude
-    
+
     /*__________Run master or slave main________*/
     #ifdef MASTER
     return master_main(argc, argv);
@@ -66,12 +69,4 @@ int main(int argc, char** argv)
     #ifdef SLAVE
     return slave_main(argc, argv);
     #endif
-}
-
-
-void switchLed()
-{
-    static bool status = false;
-    status = (status) ? false : true;
-    gpio_put(LED_PIN, status);
 }

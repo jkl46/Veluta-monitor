@@ -35,7 +35,6 @@ int slave_main(int argc, char** argv)
 
 void send_hornet_data(int hornetID)
 {
-    switchLed();
     // lora_data data = {
     //     (uint8_t) thisMonitor.id,
     //     hornetID,
