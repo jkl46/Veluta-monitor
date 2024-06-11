@@ -51,10 +51,6 @@ Button button3(BUTTON3_PIN, nullptr);
 int main(int argc, char** argv)
 {        
     // TODO: remove below
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, true);
-    button1.callback = &btn1Callback;
-    button2.callback = &btn2Callback;
 
     // setup pico for serial printing. 
     // TODO: remove in final version
@@ -78,33 +74,4 @@ int main(int argc, char** argv)
     #ifdef SLAVE
     return slave_main(argc, argv);
     #endif
-}
-
-
-void switchLed()
-{
-    static bool status = false;
-    status = (status) ? false : true;
-    gpio_put(LED_PIN, status);
-}
-
-void blinkLed(int ms)
-{
-    switchLed();
-    sleep_ms(ms);
-    switchLed();
-}
-
-
-void btn1Callback()
-{
-    static int n = 1;
-    lora_data mock_lora_data = {1, n++, 3, 4.4, 5.5};
-    hornet_record_t mock_hornet_record = {FLASH_CHECKSUM, 0, time_us_64(), mock_lora_data};
-    flash.insert_record(&mock_hornet_record);
-}
-
-void btn2Callback()
-{
-    flash.print_records();
 }
