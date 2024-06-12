@@ -33,7 +33,7 @@ recordsInfoCollection recordsBuffer;
 int master_main(int argc, char** argv)
 {
     // Init LoRa
-    // receiver.start();
+    receiver.start();
 
     // Attach button callbacks for master
     button1.callback = &master_button1_callBack;
@@ -43,14 +43,15 @@ int master_main(int argc, char** argv)
     while(1)
     {
         // Receive hornet data
-        // if (receiver.read(&hornetDataBuffer))
-        // {
-        //     handle_hornet_data(&hornetDataBuffer);
+        if (receiver.read(&hornetDataBuffer))
+        {
+            printf("test123");
+            stdio_flush();
+            // handle_hornet_data(&hornetDataBuffer);
+            // Use data struct to read data from LoRa
+            printf("ID: %d, Hornet_ID: %d, area %d, long: %f, lat: %f\n", hornetDataBuffer.monitor_id, hornetDataBuffer.hornet_id, hornetDataBuffer.area_code, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
 
-        //     // Use data struct to read data from LoRa
-        //     printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.monitor_id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
-
-        // }
+        }
     }
     return 0;
 }

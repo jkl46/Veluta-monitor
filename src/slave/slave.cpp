@@ -18,13 +18,12 @@ LoRaTransmitter transmitter;
 int slave_main(int argc, char** argv)
 {
     // Init Lora
-    // transmitter.start();
+    transmitter.start();
 
     // Attach button callbacks for slave
     button1.callback = &slave_button1_callBack;
     button2.callback = &slave_button2_callBack;
     button3.callback = &slave_button3_callBack;
-
 
     while(1)
     {
@@ -35,13 +34,18 @@ int slave_main(int argc, char** argv)
 
 void send_hornet_data(int hornetID)
 {
-    // lora_data data = {
-    //     (uint8_t) thisMonitor.id,
-    //     hornetID,
-    //     thisMonitor.location.longitude,
-    //     thisMonitor.location.latitude,
-    // };
-    // transmitter.send(&data);
+    lora_data data = {
+        (uint8_t) thisMonitor.id,
+        (uint8_t) hornetID,
+        thisMonitor.area,
+        thisMonitor.location.longitude,
+        thisMonitor.location.latitude,
+    };
+
+    printf("send1\n");
+    transmitter.send(&data);
+    printf("send2\n");
+    stdio_flush();
 }
 
 void slave_button1_callBack()
