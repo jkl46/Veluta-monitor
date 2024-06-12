@@ -18,7 +18,7 @@
 #define READ_FLASH_INFO_ADRESS (uint8_t*)(XIP_BASE + WRITE_FLASH_INFO_ADRESS)
 #define READ_RECORDS_ADRESS  (uint8_t*)(XIP_BASE + WRITE_RECORDS_ADRESS)
 
-#define FLASH_CHECKSUM (uint16_t) 0x1448
+#define FLASH_CHECKSUM (uint16_t) 0x2EAA
 #define RECORD_CHECKSUM FLASH_CHECKSUM
 
 #define RECORD_MAX 100
@@ -39,19 +39,21 @@ typedef struct {
 
 class Flash
 {
-private:
-    flash_info_t* flashInfo;
 
 public:
+    flash_info_t* flashInfo;
     hornet_record_t* hornetRecordReference[RECORD_MAX];
 
     Flash();
     int insert_record(hornet_record_t *record);
     void remove_record(int index);
+    void print_record_references();
 };
 
 void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest);
 void print_buf(const uint8_t *buf, size_t len);
 void print_record(hornet_record_t* recordPtr);
+void reverse_copy_bytes(uint8_t* src, uint8_t* dest, int len);
+void copy_bytes(uint8_t* src, uint8_t* dest, int len);
 
 #endif // FLASH_HPP

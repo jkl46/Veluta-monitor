@@ -1,8 +1,12 @@
 /*_________________CHANGE COMMENT BELOW__________________*/
 #define MASTER
 // #define SLAVE
+// #define SLAVE_ID 1
 // #define SLAVE_ID 2
-// #define SLAVE_ID 3
+
+// Choose area. This can be one of: COUNTRY, URBAN CITY
+#define MONITOR_AREA COUNTRY
+
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
 #warning "BUILDING MASTER!"
@@ -23,7 +27,7 @@ extern int slave_main(int argc, char** argv);
 #include <pico/stdlib.h>
 #include "buttons.hpp"
 #include "main.hpp"
-#include "flash.hpp"
+#include "hornet.hpp"
 
 
 // Defines
@@ -32,11 +36,13 @@ extern int slave_main(int argc, char** argv);
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
 
+
+
 /*___ Monitor ___*/
 #if defined(MASTER)
-this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0};
+this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0, MONITOR_AREA};
 #elif defined(SLAVE)
-this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID};
+this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID, MONITOR_AREA};
 #endif
 
 /*___ Buttons ___ */
@@ -58,6 +64,8 @@ int main(int argc, char** argv)
     // TODO: get gps location
     //// Put latitude in thisMonitor.location.latitude
     //// Put longitude in thisMonitor.location.longitude
+    thisMonitor.location.latitude = 5.4321;
+    thisMonitor.location.longitude = 1.2345;
 
     /*__________Run master or slave main________*/
     #ifdef MASTER

@@ -145,7 +145,7 @@ int trilaterate(record_t record1, record_t record2, record_t record3, coord_t *t
     }
 
     point_t *closestPoints[3];
-    double shortestDistance = 0xFFFFFFFFFFFFFFFF;
+    double shortestDistance = 0x0FFFFFFFFFFFFFFF;
 
     //table connected 1d index to 2d. For easy of use. inefficient.
     point_t *pointMap[6] = {&intersectionPoints[0][0], &intersectionPoints[0][1], &intersectionPoints[1][0], &intersectionPoints[1][1], &intersectionPoints[2][0], &intersectionPoints[2][1]};
