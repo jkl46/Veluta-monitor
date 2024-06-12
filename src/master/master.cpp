@@ -26,7 +26,6 @@ LoRaReceiver receiver;
 lora_data hornetDataBuffer;
 
 /* trilaterate */
-coord_t monitorBuffer[MONITOR_COUNT];
 record_t recordBuffer[MONITOR_COUNT];
 
 int master_main(int argc, char** argv)
@@ -78,9 +77,11 @@ void trilaterate_hornets(/* 2d array of 3 hornets' first and second arrival*/)
     // TODO: Send trilateration coordinate to thing network along with some other shit
 }
 
-bool is_trilateration_possible()
+// Determine if trilateration is possible. If possible set record into recordBuffer
+bool is_trilateration_possible(record_t* recordBuffer)
 {
-    uint32_t avgTimeBuffer[MONITOR_COUNT];
+    static coord_t monitorBuffer[MONITOR_COUNT];
+    static uint32_t avgTimeBuffer[MONITOR_COUNT];
 
     // Empty average time array
     for (size_t i = 0; i < MONITOR_COUNT; i++)
