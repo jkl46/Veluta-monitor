@@ -4,7 +4,6 @@
 #include <hardware/gpio.h>
 #include <stdlib.h>
 
-
 Flash::Flash()
 {
     this->flashInfo = (flash_info_t*) READ_FLASH_INFO_ADRESS;
@@ -12,7 +11,7 @@ Flash::Flash()
     flash_info_t newFlashInfo = {FLASH_CHECKSUM};
 
     // If invalid flash info
-    if (this->flashInfo->checksum != FLASH_CHECKSUM || true)
+    if (this->flashInfo->checksum != FLASH_CHECKSUM)
     {
         // Create new flash Info
         flash_info_t newFlashInfo;

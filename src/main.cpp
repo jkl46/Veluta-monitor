@@ -3,6 +3,10 @@
 // #define SLAVE
 // #define SLAVE_ID 1
 // #define SLAVE_ID 2
+
+// Choose area. This can be one of: COUNTRY, URBAN CITY
+#define MONITOR_AREA COUNTRY
+
 /*_________________ DO NOT CHANGE BELOW__________________*/
 #if defined(MASTER)
 #warning "BUILDING MASTER!"
@@ -23,6 +27,7 @@ extern int slave_main(int argc, char** argv);
 #include <pico/stdlib.h>
 #include "buttons.hpp"
 #include "main.hpp"
+#include "hornet.hpp"
 
 
 // Defines
@@ -31,11 +36,13 @@ extern int slave_main(int argc, char** argv);
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
 
+
+
 /*___ Monitor ___*/
 #if defined(MASTER)
-this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0};
+this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0, MONITOR_AREA};
 #elif defined(SLAVE)
-this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID};
+this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID, MONITOR_AREA};
 #endif
 
 /*___ Buttons ___ */

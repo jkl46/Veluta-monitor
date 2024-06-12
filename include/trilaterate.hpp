@@ -49,5 +49,4 @@ int point_to_coord(coord_t base, point_t point, coord_t *result);
 int estimate(int argc, char **argv);
 
 double get_difference(double a, double b);
-
 #endif // TRILATERATE_HPP

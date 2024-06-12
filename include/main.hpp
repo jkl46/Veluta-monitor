@@ -20,6 +20,7 @@ typedef struct {
     } location;
     monitor_type type;
     int id;
+    uint8_t area;
 } this_monitor_t;
 
 // Object reference for Slave and master main

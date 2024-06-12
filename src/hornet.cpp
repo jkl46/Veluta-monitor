@@ -1,25 +1,27 @@
 #include "hornet.hpp"
 
-double time_to_distance(double time, int area)
+// Convert time in seconds to distance
+double time_to_distance(uint32_t time, uint8_t area)
 {
     double distance = -1;
 
     switch (area)
     {
     case COUNTRY:
-        distance = COUNTRY_FORMULA(time);
+        distance = (double) COUNTRY_FORMULA(time);
         break;
         
     case URBAN:
-        distance = URBAN_FORMULA(time);
+        distance = (double) URBAN_FORMULA(time);
         break;
     
     case CITY:
-        distance = CITY_FORMULA(time);
+        distance = (double) CITY_FORMULA(time);
         break;
 
     default:
         break;
-    }
+   }
+
     return distance;
 }
