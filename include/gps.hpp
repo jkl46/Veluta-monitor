@@ -1,6 +1,10 @@
 #ifndef GPS_H
 #define GPS_H
 
+/*
+these includes are used to include the necessary libraries
+used for the GPS class
+*/
 #include <stdint.h>
 #include "hardware/uart.h"
 #include "hardware/gpio.h"
@@ -23,7 +27,6 @@ class gps {
     // Constructor
         gps() : latitude(0.0), longitude(0.0) {}
     //Functions
-        ~gps();
         void init_gps();
         std::vector<char> read_gps();
         Coordinates send_gps(std::vector<char> gps_data);
@@ -35,6 +38,9 @@ class gps {
 
 
     private:
+    /*
+    these are the variables that are used to configure the UART
+    */
         const int UART_data_bits = 8;
         const int UART_stop_bits = 1;
         const int UART_TX_PIN = 5;
