@@ -41,7 +41,7 @@ extern int slave_main(int argc, char** argv);
 /*___ Monitor ___*/
 #if defined(MASTER)
 this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0, MONITOR_AREA};
-#elif defined(SLAVE)
+#elif defined(SLAVE_ID)
 this_monitor_t thisMonitor = {{}, SLAVE_MONITOR, SLAVE_ID, MONITOR_AREA};
 #endif
 
@@ -64,8 +64,6 @@ int main(int argc, char** argv)
     // TODO: get gps location
     //// Put latitude in thisMonitor.location.latitude
     //// Put longitude in thisMonitor.location.longitude
-    thisMonitor.location.latitude = 5.4321;
-    thisMonitor.location.longitude = 1.2345;
 
     /*__________Run master or slave main________*/
     #ifdef MASTER

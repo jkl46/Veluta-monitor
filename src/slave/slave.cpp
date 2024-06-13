@@ -42,23 +42,28 @@ void send_hornet_data(int hornetID)
         thisMonitor.location.latitude,
     };
 
-    printf("send1\n");
+    if (hornetID == 2)
+    {
+        data.monitor_id = 1;
+    }
+
+    printf("pre send\n");
     transmitter.send(&data);
-    printf("send2\n");
+    printf("post send\n");
     stdio_flush();
 }
 
 void slave_button1_callBack()
 {
-    send_hornet_data(1);
+    send_hornet_data(0);
 }
 
 void slave_button2_callBack()
 {
-    send_hornet_data(2);
+    send_hornet_data(1);
 }
 
 void slave_button3_callBack()
 {
-    send_hornet_data(3);
+    send_hornet_data(2);
 }
