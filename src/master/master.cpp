@@ -7,8 +7,8 @@
 #include "hornet.hpp"
 
 #define MONITOR_MASTER_ID 0
-#define MASTER_SLAVE_ID 1
-#define MASTER_SLAVE_ID 2
+#define MONITOR_SLAVE1_ID 1
+#define MONITOR_SLAVE2_ID 2
 
 // Defines
 #define MICRO_SECONDS 1000000 // micro seconds in seconds
@@ -153,16 +153,16 @@ void handle_hornet_data(lora_data* data)
 {
         switch (data->monitor_id)
     {
-    case 0: // MASTER
+    case MONITOR_MASTER_ID: // MASTER
         data->latitude = 51.62002126019437;
         data->longitude = 5.179212075554453;
         break;
 
-    case 1: // SLAVE 1
+    case MONITOR_SLAVE1_ID: // SLAVE 1
         data->latitude = 51.6198177965402;
         data->longitude = 5.185756791989251;
         break;
-    case 2: // SLAVE 2
+    case MONITOR_SLAVE2_ID: // SLAVE 2
         data->latitude = 51.61792778920709;
         data->longitude = 5.182638190743447;
         break;
