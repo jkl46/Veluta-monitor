@@ -7,8 +7,8 @@
 #include "hornet.hpp"
 
 #define MONITOR_MASTER_ID 0
-#define MONITOR_MASTER_ID 1
-#define MONITOR_MASTER_ID 2
+#define MASTER_SLAVE_ID 1
+#define MASTER_SLAVE_ID 2
 
 // Defines
 #define MICRO_SECONDS 1000000 // micro seconds in seconds
