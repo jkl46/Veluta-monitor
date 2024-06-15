@@ -145,6 +145,30 @@ bool is_trilateration_possible()
 
 void handle_hornet_data(lora_data* data)
 {
+// Overwrite received GPS coordinates. Automatic setting of GPS location does not work.
+// Overwrite with switch case like so
+/* 
+     switch (data->monitor_id)
+    {
+    case MONITOR_MASTER_ID: // MASTER
+        data->latitude = 51.62366434625694;
+        data->longitude = 5.190373872939375;
+        break;
+
+    case MONITOR_SLAVE1_ID: // SLAVE 1
+        data->latitude = 51.62308845289566;
+        data->longitude = 5.184577788820217;
+        break;
+    case MONITOR_SLAVE2_ID: // SLAVE 2
+        data->latitude = 51.6194000526858;
+        data->longitude = 5.189355326923746;
+        break;
+
+    default:
+        break;
+    }
+*/
+
     // Create record
     hornet_record_t thisRecord = { RECORD_CHECKSUM, flash.flashInfo->bootNumber, time_us_64(), *data };
 

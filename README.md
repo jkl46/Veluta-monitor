@@ -83,3 +83,11 @@ _**3 modules with:**_
 | GPIO11  | GND |
 | GPIO14  | GND |
 | GPIO15  | GND |
+
+---
+### Overwriting coordinates used by monitors
+**Required**
+* Python 3+
+* Google earth pro
+
+Use python script in util/trilaterateMarkers/main.py. Export google earth markers as kml. Set filename input in main\.py and run. Place the output switch case in the beginning of void handle_hornet_data(lora_data* data). 
