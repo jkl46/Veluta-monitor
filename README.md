@@ -16,7 +16,6 @@ This innovation will save time and allow professionals to focus on nest removal 
 Within this project we will focus on the communication process and the locating part of the hornet nest. 
 
 
---- 
 ## In this project
 * **Trilaterate GPS coordinates**
 * **LoRaWan Communication**
