@@ -53,6 +53,10 @@ int main(int argc, char** argv)
     // TODO: Store latitude in thisMonitor.latitude. (this must be a double)
     // TODO: Store longitude in thisMonitor.longitude. (this must be a double)
 
+    // Init serial communication
+    stdio_init_all();
+    stdio_flush();
+    
     /*__________Run master or slave main________*/
     #ifdef MASTER
     return master_main(argc, argv);
