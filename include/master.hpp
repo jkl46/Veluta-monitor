@@ -10,27 +10,8 @@ struct recordsInfoCollection {
 	record_t record[MONITOR_COUNT];
     uint8_t area[MONITOR_COUNT];
 
-	recordsInfoCollection()
-	{
-		// Connect records with monitors
-		for (size_t i = 0; i < MONITOR_COUNT; i++)
-		{
-			this->record[i].pos = (this->monitorPos+i);
-		}
-		
-	}
-
-    void emptyBuffers()
-    {
-        for (size_t i = 0; i < MONITOR_COUNT; i++)
-        {
-            this->avgTime[i] = 0;
-            this->monitorPos[i] = {0,0};
-            this->record[i].r = 0;
-            this->area[i] = 0;
-        }
-    }
-
+	recordsInfoCollection();
+    void emptyBuffers();
 };
 
 extern struct recordsInfoCollection recordsBuffer;

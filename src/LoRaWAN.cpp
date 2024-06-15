@@ -4,7 +4,8 @@
 #include <string>
 #include "hornet.hpp"
 
-void LoRaWAN::initLoRaWAN(){
+void LoRaWAN::initLoRaWAN()
+{
     uart_init(uart0, BAUDRATE);
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); 
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); 
@@ -29,6 +30,7 @@ void LoRaWAN::sendLoRaWAN(double latitude, double longitude, uint8_t area_code)
     case 3:
         area_type = "City";
         break;
+    }
     // Convert the variables to strings before concatenating
     std::string message = "AT+SEND=Hive: gps: Latitude: " + std::to_string(latitude) + ", Longitude: " + std::to_string(longitude) + ", Areatype: " + area_type + "\r\n";
     uart_puts(uart0, message.c_str()); // Use c_str() to convert the string to a const char*

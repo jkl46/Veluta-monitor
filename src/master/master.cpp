@@ -33,7 +33,7 @@ recordsInfoCollection recordsBuffer;
 int master_main(int argc, char** argv)
 {
     // Init LoRa
-    // receiver.start();
+    receiver.start();
 
     // Attach button callbacks for master
     button1.callback = &master_button1_callBack;
@@ -43,14 +43,11 @@ int master_main(int argc, char** argv)
     while(1)
     {
         // Receive hornet data
-        // if (receiver.read(&hornetDataBuffer))
-        // {
-        //     handle_hornet_data(&hornetDataBuffer);
-
-        //     // Use data struct to read data from LoRa
-        //     printf("ID: %d, Hornet_ID: %d, long: %f, lat: %f\n", hornetDataBuffer.monitor_id, hornetDataBuffer.hornet_id, hornetDataBuffer.longitude, hornetDataBuffer.latitude);
-
-        // }
+        if (receiver.read(&hornetDataBuffer))
+        {
+            // A lora_data struct has been recieved from lora. This is stored in hornetDataBuffer.
+            handle_hornet_data(&hornetDataBuffer);
+        }
     }
     return 0;
 }
@@ -69,13 +66,16 @@ void trilaterate_hornets()
 
     if(!trilaterate(recordsBuffer.record[0], recordsBuffer.record[1], recordsBuffer.record[2], &trilaterationCoord, &triangulationCoord))
     {
-        // Trilateration has failed
+        // Trilateration has failed. This is likely because the radii do not intersect and cannot trilaterate. 
+        // TODO: Handle fail case
+
         return;
     }
 
-    // printf("trilateration successfull!\n");
-    // printf("trilateration coords are lat %f, lon %f\n", trilaterationCoord.lat, trilaterationCoord.lon);
-    // stdio_flush();
+    // At this point trilateration is successful
+    // Trilateration coordinate is present in coord_t trilaterationCoord
+    // Trilangulation coordinate is present in triangulationCoord
+    // TODO: Handle successful trilateration case.
 
 }
 
@@ -120,15 +120,11 @@ bool is_trilateration_possible()
                 hornetReferenceCopy[i] = nullptr;
                 hornetReferenceCopy[x] = nullptr;
 
-                if (recordsBuffer.avgTime[monitorNum] == 0) // If first record in buffer, the average cannot be calculated
-                {
+                // If first record in buffer, the average cannot be calculated
+                if (recordsBuffer.avgTime[monitorNum] == 0) 
                     recordsBuffer.avgTime[monitorNum] = timeDifference; 
-                }
                 else
-                {
                     recordsBuffer.avgTime[monitorNum] = (recordsBuffer.avgTime[monitorNum] + timeDifference) / 2;
-                    
-                }
             }
         }
         
@@ -187,4 +183,28 @@ void master_button2_callBack()
 void master_button3_callBack()
 {
     handle_hornet_data(2);
+}
+
+
+// construct struct
+recordsInfoCollection::recordsInfoCollection()
+{
+		// Connect records with monitors
+		for (size_t i = 0; i < MONITOR_COUNT; i++)
+		{
+			this->record[i].pos = (this->monitorPos+i);
+		}
+		
+}
+
+// Empty struct memeber
+void recordsInfoCollection::emptyBuffers()
+{
+    for (size_t i = 0; i < MONITOR_COUNT; i++)
+    {
+        this->avgTime[i] = 0;
+        this->monitorPos[i] = {0,0};
+        this->record[i].r = 0;
+        this->area[i] = 0;
+    }
 }

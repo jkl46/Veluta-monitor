@@ -6,21 +6,23 @@
 #include <hardware/address_mapped.h>
 #include "LoRaData.hpp"
 
-#define FLASH_TARGET_OFFSET (256 * 1024)                                    // Base of flash region
+#define FLASH_TARGET_OFFSET (256 * 1024) // Base of flash region
 
-#define FLASH_INFO_OFFSET 0  // Must be multiple of 4KB
-#define RECORD_OFFSET FLASH_SECTOR_SIZE
+#define FLASH_INFO_OFFSET 0 // Adress up from start of flash region data is written
+#define RECORD_OFFSET FLASH_SECTOR_SIZE 
 
-#define WRITE_FLASH_INFO_ADRESS (FLASH_TARGET_OFFSET + FLASH_INFO_OFFSET)       // Adress where flash info is stored
-#define WRITE_RECORDS_ADRESS (FLASH_TARGET_OFFSET + RECORD_OFFSET)              // Adress where hornet records are stored
+#define WRITE_FLASH_INFO_ADRESS (FLASH_TARGET_OFFSET + FLASH_INFO_OFFSET) // Adress where flash info is stored
+#define WRITE_RECORDS_ADRESS (FLASH_TARGET_OFFSET + RECORD_OFFSET) // Adress where hornet records are stored
 
 #define READ_TARGET_ADRESS   (uint8_t*)(XIP_BASE + FLASH_TARGET_OFFSET)
 #define READ_FLASH_INFO_ADRESS (uint8_t*)(XIP_BASE + WRITE_FLASH_INFO_ADRESS)
 #define READ_RECORDS_ADRESS  (uint8_t*)(XIP_BASE + WRITE_RECORDS_ADRESS)
 
+/* Checksum for flash. Changing this checksum for example from 0x1234 to 0x1235. Will rewrite flash! */
 #define FLASH_CHECKSUM (uint16_t) 0x2EAA
 #define RECORD_CHECKSUM FLASH_CHECKSUM
 
+/* Max amount of record. This value dictates the region in flash meant for writing records. Change cheksum when changing of RECORD_MAX */
 #define RECORD_MAX 100
 
 typedef struct {
@@ -46,7 +48,7 @@ public:
 
     Flash();
     int insert_record(hornet_record_t *record);
-    void remove_record(int index);
+    void remove_record(uint32_t recordAdress);
     void print_record_references();
 };
 

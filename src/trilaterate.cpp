@@ -4,8 +4,8 @@
 // create 2 coord_t variables that hold the trilateration and triangulation point
 // use int trilaterate(record_t, record_t, record_t, coord_t*, coord_t*) with parameters
 
-#include <math.h>
 #include "trilaterate.hpp"
+#include <math.h>
 
 // Calculate radian from degree
 #define DEGREE_TO_RAD(degree) (degree * M_PI / 180.0)

@@ -8,6 +8,7 @@ Flash::Flash()
 {
     this->flashInfo = (flash_info_t*) READ_FLASH_INFO_ADRESS;
 
+    // Create new flashInfo
     flash_info_t newFlashInfo = {FLASH_CHECKSUM};
 
     // If invalid flash info
@@ -22,6 +23,7 @@ Flash::Flash()
     } 
     else
     {
+        // Increase boot number
         newFlashInfo.bootNumber = this->flashInfo->bootNumber + 1;
     }
     // Erase flash info region
@@ -53,6 +55,7 @@ Flash::Flash()
 int Flash::insert_record(hornet_record_t* record)
 {
     int recordIndex = 0;
+    // Get first available space in flash.recordRefrence
     for (size_t i = 0; i < RECORD_MAX; i++)
     {
         if (this->hornetRecordReference[i] == nullptr)
@@ -62,12 +65,12 @@ int Flash::insert_record(hornet_record_t* record)
         }
     }
     
+    // Get first abailable space in flash region. Write record to this sapce
     for (size_t i = 0; i < RECORD_MAX; i++)
     {
         hornet_record_t* thisRecord_ptr = (hornet_record_t*) (READ_RECORDS_ADRESS + (FLASH_PAGE_SIZE * i));
         if (thisRecord_ptr->checksum != RECORD_CHECKSUM)
         {
-
 
             write_flash_page((uint8_t*) record, sizeof(hornet_record_t), WRITE_RECORDS_ADRESS + (FLASH_PAGE_SIZE * i)); 
             
@@ -78,15 +81,39 @@ int Flash::insert_record(hornet_record_t* record)
     return 0;
 }
 
-void Flash::remove_record(int index)
+void Flash::remove_record(uint32_t recordAdress)
 {
-    // TODO: implement removal of record
+    uint8_t flashCopy[FLASH_SECTOR_SIZE]; 
+    uint32_t sectorStartAdress = recordAdress - (recordAdress % FLASH_SECTOR_SIZE);
+
+    // copy flash sector where record is present.
+    uint32_t readAddres;
+    for (size_t i = 0; i < FLASH_SECTOR_SIZE; i++)
+    {
+        readAddres = sectorStartAdress + i; 
+
+        // Copy flash
+        flashCopy[i] = *((uint8_t*)readAddres);
+        
+        // Set content to 0xFF if byte in record region
+        if (readAddres >= recordAdress && readAddres < (recordAdress + FLASH_SECTOR_SIZE))
+        {
+            flashCopy[i] = 0xFF;
+        }
+    }
     
-    // if record not at end of sector
-    // copy content to ram
-    // reset sector in flash
-    // remove page in ram copy
-    // rewrite flash region
+    // Disable interrupts
+    uint32_t interrupts = save_and_disable_interrupts();
+
+    // Erase flash
+    flash_range_erase(sectorStartAdress, FLASH_SECTOR_SIZE);
+
+    // Write flash
+    flash_range_program((sectorStartAdress - XIP_BASE), flashCopy, FLASH_PAGE_SIZE);
+
+    // Reenable interrupts
+    restore_interrupts(interrupts);
+    // Erase flash
 }
 
 void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest)
@@ -113,6 +140,7 @@ void write_flash_page(uint8_t* src, uint8_t sizeOfSource, uint32_t dest)
     // Reenable interrupts
     restore_interrupts(interrupts);
 }
+
 
 void Flash::print_record_references()
 {

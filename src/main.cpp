@@ -29,15 +29,10 @@ extern int slave_main(int argc, char** argv);
 #include "main.hpp"
 #include "hornet.hpp"
 
-
 // Defines
-
 // Prototypes
 
 // objects (Add define objects with external reference in main.hpp for use in slave- and master.cpp)
-
-
-
 /*___ Monitor ___*/
 #if defined(MASTER)
 this_monitor_t thisMonitor = {{}, MASTER_MONITOR, 0, MONITOR_AREA};
@@ -52,20 +47,11 @@ Button button3(BUTTON3_PIN, nullptr);
 
 int main(int argc, char** argv)
 {        
-    // TODO: remove below
-
-    // setup pico for serial printing. 
-    // TODO: remove in final version
-    stdio_init_all();
-    stdio_flush();
-
-    /*___ GPS ___*/
+    /*___ GPS ___*/ /* Currently not functional, please look in release rapport and or README.md for setting the monitor ID by hand. */
     // TODO: Init GPS
     // TODO: get gps location
-    //// Put latitude in thisMonitor.location.latitude
-    //// Put longitude in thisMonitor.location.longitude
-    thisMonitor.location.latitude = 5.4321;
-    thisMonitor.location.longitude = 1.2345;
+    // TODO: Store latitude in thisMonitor.latitude. (this must be a double)
+    // TODO: Store longitude in thisMonitor.longitude. (this must be a double)
 
     /*__________Run master or slave main________*/
     #ifdef MASTER
