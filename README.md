@@ -21,7 +21,7 @@ Within this project we will focus on the communication process and the locating 
 * **LoRaWan Communication**
 * **Flash storage**
 * **Raspberry pi Pico**
-* **Converting _vespa velutina_ flying to to distance**
+* **Converting _vespa velutina_ flying time to to distance**
 * **C/C++**
 
 ---
