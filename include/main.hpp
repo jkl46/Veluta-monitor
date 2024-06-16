@@ -11,6 +11,10 @@
 
 #define MONITOR_COUNT 3
 
+#define MONITOR_MASTER_ID 0
+#define MONITOR_SLAVE1_ID 1
+#define MONITOR_SLAVE2_ID 2
+
 enum monitor_type {SLAVE_MONITOR, MASTER_MONITOR};
 
 typedef struct {
