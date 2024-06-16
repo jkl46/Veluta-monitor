@@ -213,15 +213,15 @@ void master_button3_callBack()
 // construct struct
 recordsInfoCollection::recordsInfoCollection()
 {
-		// Connect records with monitors
-		for (size_t i = 0; i < MONITOR_COUNT; i++)
-		{
-			this->record[i].pos = (this->monitorPos+i);
-		}
+	// Connect records with monitors
+	for (size_t i = 0; i < MONITOR_COUNT; i++)
+	{
+		this->record[i].pos = (this->monitorPos+i);
+	}
 		
 }
 
-// Empty struct memeber
+// Reset struct members
 void recordsInfoCollection::emptyBuffers()
 {
     for (size_t i = 0; i < MONITOR_COUNT; i++)
