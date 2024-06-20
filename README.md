@@ -26,7 +26,9 @@ Within this project we will focus on the communication process and the locating 
 
 ---
 
-### Made for KBS IOT Windesheim (2024). Finalized as of 16-6-2024. [Winning project for Winnovation green award](https://liveadminwindesheim.sharepoint.com/sites/Nieuws/SitePages/Sam,-Matz,-Jay-en-Jens-winnen-de-Green-Award-tijdens-Winnovation-2024!.aspx)!
+### Made for KBS IOT Windesheim (2024). Finalized as of 16-6-2024. 
+**[Winning project for Winnovation green award!](https://liveadminwindesheim.sharepoint.com/sites/Nieuws/SitePages/Sam,-Matz,-Jay-en-Jens-winnen-de-Green-Award-tijdens-Winnovation-2024!.aspx)**
+**Watch a demonstration [here](https://www.youtube.com/watch?v=ZwA5_NCvS_0)**
 
 **Made By**
 * **[Jay](https://github.com/jkl46)**
